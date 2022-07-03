@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 패럴렉스 적용을 위한 2차원 배열 선언 (*인스펙터 표시) | https://m.blog.naver.com/kijw24/221631136622 참조
+[System.Serializable]
+public class BackgroundList
+{
+    public GameObject[] backgroundImages;
+}
+
 public class GameManager : MonoBehaviour
 {
     [Header ("재화")]
@@ -10,25 +17,41 @@ public class GameManager : MonoBehaviour
     public Text sugarText;
     public float maxTimer = 0;
     int gold = 0;
-    int sugar = 0;
+    // int sugar = 0;
     float startTimer = 0;
     float currentTimer = 0;
 
     [Header("배경")]
-    public GameObject [] backImages;
+    public BackgroundList [] backgroundList;
+    public GameObject mainCamera;
+    public float parallaxSpeed;
+    Camera mainCameraScript;
     int stageLevel = 0;
 
     private void Awake()
     {
+        mainCameraScript = mainCamera.gameObject.GetComponent<Camera>();
         startTimer = Time.time;
     }
     private void Update()
     {
         CheckGoldTimer();
+        Parallax();
     }
 
+    //패럴렉스
+    void Parallax()
+    {
+        float pivotValue = -Input.GetAxisRaw("Horizontal");
+        for(int i = 0; i < backgroundList[stageLevel].backgroundImages.Length; i++) {
+            if (mainCameraScript.isCameraMoving) {
+                int parallaxSpeedRatio = int.Parse(backgroundList[stageLevel].backgroundImages[i].name.Split('_')[1]);
+                backgroundList[stageLevel].backgroundImages[i].gameObject.transform.position += new Vector3(pivotValue, 0, 0) * parallaxSpeedRatio * parallaxSpeed * Time.deltaTime;
+            }
+        }
+    }
     // 골드 타이머
-    void CheckGoldTimer ()
+    void CheckGoldTimer()
     {
         currentTimer = Time.time - startTimer;
         if (currentTimer >= maxTimer) {
@@ -51,8 +74,11 @@ public class GameManager : MonoBehaviour
 
         // 스테이지 레벨 설정
         stageLevel = inputStageLevel;
-        for (int i = 0; i < backImages.Length; i++) // 스테이지 배경 비활성화
-            backImages[i].SetActive(false);
-        backImages[stageLevel].SetActive(true); // 선택된 스테이지 배경 활성화
+        for (int i = 0; i < backgroundList.Length; i++) { // 스테이지 배경 비활성화
+            for(int j = 0; j < backgroundList[i].backgroundImages.Length; j++)
+                backgroundList[i].backgroundImages[j].SetActive(false);
+        }
+        for (int i = 0; i < backgroundList[stageLevel].backgroundImages.Length; i++) // 선택된 스테이지 배경 활성화
+            backgroundList[stageLevel].backgroundImages[i].SetActive(true);
     }
 }

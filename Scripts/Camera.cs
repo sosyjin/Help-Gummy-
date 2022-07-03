@@ -4,22 +4,19 @@ using UnityEngine;
 
 public class Camera : MonoBehaviour
 {
-    float leftMove = 0;
-    float rightMove = 0;
-    float camMove = 0;
-    public float camSpeedRatio = 0;
+    public float camSpeed = 0;
     public float halfMapSize = 0;
+    float horizontalMove = 0;
+    [System.NonSerialized]
+    public bool isCameraMoving = false;
 
-    void FixedUpdate()
+    void Update()
     {
-        leftMove = Input.GetAxisRaw("Horizontal") * camSpeedRatio;
-        rightMove = Input.GetAxisRaw("Horizontal") * camSpeedRatio;
-        camMove = leftMove + rightMove;
-
-        if(Mathf.Abs(gameObject.transform.position.x) < halfMapSize) { // 카메라 이동 방지
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x + camMove, gameObject.transform.position.y, gameObject.transform.position.z);
-        } else if (camMove * gameObject.transform.position.x < 0) {
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x + camMove, gameObject.transform.position.y, gameObject.transform.position.z);
+        horizontalMove = Input.GetAxisRaw("Horizontal") * camSpeed;
+        isCameraMoving = false;
+        if( (Mathf.Abs(gameObject.transform.position.x) < halfMapSize) || (horizontalMove * gameObject.transform.position.x < 0) ) { // 카메라 범위 외 이동 방지
+            isCameraMoving = true;
+            gameObject.transform.position += new Vector3(horizontalMove, 0, 0) * Time.deltaTime;
         }
     }
 }
