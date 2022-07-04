@@ -28,6 +28,13 @@ public class GameManager : MonoBehaviour
     Camera mainCameraScript;
     int stageLevel = 0;
 
+    [Header("오브젝트 풀링")]
+    public Transform objectPool;
+    [Range(30, 100)]
+    public int poolSize;
+
+
+
     private void Awake()
     {
         mainCameraScript = mainCamera.gameObject.GetComponent<Camera>();
