@@ -28,12 +28,12 @@ public class GameManager : MonoBehaviour
     Camera mainCameraScript;
     int stageLevel = 0;
 
-    [Header("오브젝트 풀링")]
+    [Header("오브젝트 풀")]
     public Transform objectPool;
-    [Range(30, 100)]
-    public int poolSize;
 
-
+    [Header("게임 재생, 시간")]
+    public Text gamePlayText;
+    public Text gameAccelText;
 
     private void Awake()
     {
@@ -81,11 +81,36 @@ public class GameManager : MonoBehaviour
 
         // 스테이지 레벨 설정
         stageLevel = inputStageLevel;
-        for (int i = 0; i < backgroundList.Length; i++) { // 스테이지 배경 비활성화
+        for (int i = 0; i < backgroundList.Length; i++) { // 전체 스테이지 배경 비활성화
             for(int j = 0; j < backgroundList[i].backgroundImages.Length; j++)
                 backgroundList[i].backgroundImages[j].SetActive(false);
         }
         for (int i = 0; i < backgroundList[stageLevel].backgroundImages.Length; i++) // 선택된 스테이지 배경 활성화
             backgroundList[stageLevel].backgroundImages[i].SetActive(true);
+    }
+
+    // 게임 가속
+    public void TimeAccelalation()
+    {
+        if(Time.timeScale == 0) {
+            return;
+        } else if (Time.timeScale < 4) {
+            Time.timeScale *= 2;
+            gameAccelText.text = "x" + Time.timeScale.ToString();
+        } else {
+            Time.timeScale = 1;
+            gameAccelText.text = "x1";
+        }
+    }
+    // 게임 정지
+    public void TimeStop()
+    {
+        if(Time.timeScale != 0) {
+            gamePlayText.text = "▶";
+            Time.timeScale = 0;
+        } else {
+            gamePlayText.text = "||";
+            Time.timeScale = int.Parse(gameAccelText.text.Replace("x", string.Empty)); // "x숫자" -> "숫자" | 가공해서 시간에 대입
+        }
     }
 }

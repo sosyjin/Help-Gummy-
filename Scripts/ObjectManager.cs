@@ -17,6 +17,11 @@ public class ObjectManager : MonoBehaviour
     public GameObject dPrefab;
     public GameObject ePrefab;
 
+    [Header("오브젝트 풀")]
+    public GameObject objectPool;
+    [Range(30, 100)]
+    public int poolSize;
+
     GameObject [] bearJellyPool;
     GameObject [] normalJellyPool;
     GameObject [] longJellyPool;
@@ -32,76 +37,78 @@ public class ObjectManager : MonoBehaviour
     private void Awake()
     {
         // 아군 유닛 풀
-        bearJellyPool = new GameObject[30];
-        normalJellyPool = new GameObject[30];
-        longJellyPool = new GameObject[30];
-        archJellyPool = new GameObject[30];
-        burgerJellyPool = new GameObject[30];
+        bearJellyPool = new GameObject[poolSize];
+        normalJellyPool = new GameObject[poolSize];
+        longJellyPool = new GameObject[poolSize];
+        archJellyPool = new GameObject[poolSize];
+        burgerJellyPool = new GameObject[poolSize];
 
         // 적군 유닛 풀
-        aPool = new GameObject[30];
-        bPool = new GameObject[30];
-        cPool = new GameObject[30];
-        dPool = new GameObject[30];
-        ePool = new GameObject[30];
+        aPool = new GameObject[poolSize];
+        bPool = new GameObject[poolSize];
+        cPool = new GameObject[poolSize];
+        dPool = new GameObject[poolSize];
+        ePool = new GameObject[poolSize];
 
         GeneratePool();
     }
 
     void GeneratePool()
     {
-        for(int i = 0; i < bearJellyPool.Length; i++) {
-            bearJellyPool[i] = Instantiate(bearJellyPrefab);
+        for(int i = 0; i < poolSize; i++) {
+            bearJellyPool[i] = Instantiate(bearJellyPrefab, new Vector2(-6.5f, bearJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
             bearJellyPool[i].SetActive(false);
-        }
-        for (int i = 0; i < normalJellyPool.Length; i++) {
-            normalJellyPool[i] = Instantiate(normalJellyPrefab);
-            normalJellyPool[i].SetActive(false);
-        }
-        for (int i = 0; i < bearJellyPool.Length; i++) {
-            longJellyPool[i] = Instantiate(longJellyPrefab);
-            longJellyPool[i].SetActive(false);
-        }
-        for (int i = 0; i < bearJellyPool.Length; i++) {
-            archJellyPool[i] = Instantiate(archJellyPrefab);
-            archJellyPool[i].SetActive(false);
-        }
-        for (int i = 0; i < bearJellyPool.Length; i++) {
-            burgerJellyPool[i] = Instantiate(burgerJellyPrefab);
-            burgerJellyPool[i].SetActive(false);
-        }
+            bearJellyPool[i].transform.parent = objectPool.transform;
 
-        for (int i = 0; i < aPool.Length; i++) {
-            aPool[i] = Instantiate(aPrefab);
+            normalJellyPool[i] = Instantiate(normalJellyPrefab, new Vector2(-6.5f, normalJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
+            normalJellyPool[i].SetActive(false);
+            normalJellyPool[i].transform.parent = objectPool.transform;
+
+            longJellyPool[i] = Instantiate(longJellyPrefab, new Vector2(-6.5f, longJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
+            longJellyPool[i].SetActive(false);
+            longJellyPool[i].transform.parent = objectPool.transform;
+
+            archJellyPool[i] = Instantiate(archJellyPrefab, new Vector2(-6.5f, archJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
+            archJellyPool[i].SetActive(false);
+            archJellyPool[i].transform.parent = objectPool.transform;
+
+            burgerJellyPool[i] = Instantiate(burgerJellyPrefab, new Vector2(-6.5f, burgerJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
+            burgerJellyPool[i].SetActive(false);
+            burgerJellyPool[i].transform.parent = objectPool.transform;
+
+            // ================================================================================================================ //
+
+            aPool[i] = Instantiate(aPrefab, new Vector2(6.5f, aPrefab.transform.position.y), UnityEngine.Quaternion.identity);
             aPool[i].SetActive(false);
-        }
-        for (int i = 0; i < bPool.Length; i++) {
-            bPool[i] = Instantiate(bPrefab);
+            aPool[i].transform.parent = objectPool.transform;
+
+            bPool[i] = Instantiate(bPrefab, new Vector2(6.5f, bPrefab.transform.position.y), UnityEngine.Quaternion.identity);
             bPool[i].SetActive(false);
-        }
-        for (int i = 0; i < cPool.Length; i++) {
-            cPool[i] = Instantiate(cPrefab);
+            bPool[i].transform.parent = objectPool.transform;
+
+            cPool[i] = Instantiate(cPrefab, new Vector2(6.5f, cPrefab.transform.position.y), UnityEngine.Quaternion.identity);
             cPool[i].SetActive(false);
-        }
-        for (int i = 0; i < dPool.Length; i++) {
-            dPool[i] = Instantiate(dPrefab);
+            cPool[i].transform.parent = objectPool.transform;
+
+            dPool[i] = Instantiate(dPrefab, new Vector2(6.5f, dPrefab.transform.position.y), UnityEngine.Quaternion.identity);
             dPool[i].SetActive(false);
-        }
-        for (int i = 0; i < ePool.Length; i++) {
-            ePool[i] = Instantiate(ePrefab);
+            dPool[i].transform.parent = objectPool.transform;
+
+            ePool[i] = Instantiate(ePrefab, new Vector2(6.5f, ePrefab.transform.position.y), UnityEngine.Quaternion.identity);
             ePool[i].SetActive(false);
+            ePool[i].transform.parent = objectPool.transform;
         }
     }
-
     GameObject [] targetPool;
-    public GameObject GenerateUnitObject(string objectName)
+    public void GenerateUnitObject(string objectName)
     {
-        switch(objectName)
-        {
+        if (Time.timeScale == 0)
+            return;
+        switch(objectName) {
             case "bearJelly":
                 targetPool = bearJellyPool;
                 break;
-            case "noramlJelly":
+            case "normalJelly":
                 targetPool = normalJellyPool;
                 break;
             case "longJelly":
@@ -133,9 +140,9 @@ public class ObjectManager : MonoBehaviour
         for (int i = 0; i < targetPool.Length; i++) {
             if (!targetPool[i].activeSelf) {
                 targetPool[i].SetActive(true);
-                return targetPool[i];
+                return;
             }
         }
-        return null;
+        return;
     }
 }
