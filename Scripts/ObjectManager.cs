@@ -53,6 +53,8 @@ public class ObjectManager : MonoBehaviour
         GeneratePool();
     }
 
+
+    // 오브젝트 풀링
     void GeneratePool()
     {
         for(int i = 0; i < poolSize; i++) {

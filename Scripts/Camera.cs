@@ -12,6 +12,7 @@ public class Camera : MonoBehaviour
 
     void Update()
     {
+        // 카메라 이동
         horizontalMove = Input.GetAxisRaw("Horizontal") * camSpeed;
         isCameraMoving = false;
         if( (Mathf.Abs(gameObject.transform.position.x) < halfMapSize) || (horizontalMove * gameObject.transform.position.x < 0) ) { // 카메라 범위 외 이동 방지

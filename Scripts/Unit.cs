@@ -12,6 +12,7 @@ public class Unit : MonoBehaviour
 
     private void Update()
     {
+        // 유닛 이동
         gameObject.transform.position += new Vector3(speed, 0, 0) * Time.deltaTime;
     }
 }
