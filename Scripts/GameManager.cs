@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("Hello World");
         mainCameraScript = mainCamera.gameObject.GetComponent<Camera>();
         startTimer = Time.time;
     }
