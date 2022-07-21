@@ -59,7 +59,11 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.5
+<<<<<<< HEAD
         value: 50
+=======
+        value: 0
+>>>>>>> parent of bd1ac99 (Version_1.5)
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -159,7 +163,11 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.5
+<<<<<<< HEAD
         value: 50
+=======
+        value: 0
+>>>>>>> parent of bd1ac99 (Version_1.5)
         inSlope: 0
         outSlope: 0
         tangentMode: 136
