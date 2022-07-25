@@ -16,12 +16,8 @@ public class GameManager : MonoBehaviour
     public Text goldText;
     public Text sugarText;
     public float maxTimer = 0;
-    [System.NonSerialized]
-    public int gold = 0;
-    /*
-    [System.NonSerialized]
-    public int sugar = 0;
-    */
+    int gold = 0;
+    // int sugar = 0;
     float startTimer = 0;
     float currentTimer = 0;
 
@@ -41,12 +37,12 @@ public class GameManager : MonoBehaviour
 
     [Header("크래프팅 UI")]
     public Animator craftingAnim;
+    public Animator shopAnim;
     public Image [] craftingImages;
     public Text jellyNameText;
     public Text craftingSugarText;
     public Text craftingJuiceText;
-    [System.NonSerialized]
-    public int craftingCursor = 0;
+    int craftingCursor = 0;
 
     private void Awake()
     {
@@ -129,7 +125,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 크래프팅 - 젤리 이미지 전환
+    // 크래프팅 젤리 이미지 전환
     public void ChangeCraftingImage(string buttonType)
     {
         // 모든 이미지 비활성화
@@ -173,7 +169,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 크래프팅 - UI 애니메이션
+    // 크래프팅 UI 애니메이션
     public void PlayCraftingPanelAnimation()
     {
         if(craftingAnim.GetBool("panelAppear")) {
@@ -182,6 +178,17 @@ public class GameManager : MonoBehaviour
         } else {
             craftingAnim.SetBool("panelAppear", true);
             craftingAnim.SetBool("panelDisappear", false);
+        }
+    }
+    public void PlayShopPanelAnimation()
+    {
+        if (shopAnim.GetBool("Appear"))
+        {   shopAnim.SetBool("Appear", false);
+            shopAnim.SetBool("Disappear", true);
+        }
+        else
+        {   shopAnim.SetBool("Appear", true);
+            shopAnim.SetBool("Disappear", false);
         }
     }
 
