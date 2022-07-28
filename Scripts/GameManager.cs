@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
 
     [Header("크래프팅 UI")]
     public Animator craftingAnim;
+    public Animator shopAnim;
     public Image [] craftingImages;
     public Text jellyNameText;
     public Text craftingSugarText;
@@ -182,6 +183,16 @@ public class GameManager : MonoBehaviour
         } else {
             craftingAnim.SetBool("panelAppear", true);
             craftingAnim.SetBool("panelDisappear", false);
+        }
+    }
+    public void PlayShopPanelAnimation()
+    {
+        if (shopAnim.GetBool("Appear")) {
+            shopAnim.SetBool("Appear", false);
+            shopAnim.SetBool("Disappear", true);
+        } else {
+            shopAnim.SetBool("Appear", true);
+            shopAnim.SetBool("Disappear", false);
         }
     }
 
