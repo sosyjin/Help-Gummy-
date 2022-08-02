@@ -23,17 +23,17 @@ public class ObjectManager : MonoBehaviour
     [Range(30, 100)]
     public int poolSize;
 
-    GameObject [] bearJellyPool;
-    GameObject [] normalJellyPool;
-    GameObject [] longJellyPool;
-    GameObject [] archJellyPool;
-    GameObject [] burgerJellyPool;
+    GameObject[] bearJellyPool;
+    GameObject[] normalJellyPool;
+    GameObject[] longJellyPool;
+    GameObject[] archJellyPool;
+    GameObject[] burgerJellyPool;
 
-    GameObject [] aPool;
-    GameObject [] bPool;
-    GameObject [] cPool;
-    GameObject [] dPool;
-    GameObject [] ePool;
+    GameObject[] aPool;
+    GameObject[] bPool;
+    GameObject[] cPool;
+    GameObject[] dPool;
+    GameObject[] ePool;
 
     [Header("크래프팅")]
     public Text sugarText;
@@ -42,8 +42,10 @@ public class ObjectManager : MonoBehaviour
     [Header("etc")]
     public GameObject gameManagerObject;
     public Text noticeText;
+    public GameObject[] panels;
     GameManager gameManager;
     Animator noticeAnim;
+    
 
     private void Awake()
     {
@@ -144,18 +146,28 @@ public class ObjectManager : MonoBehaviour
             return;
         switch(objectName) {
             case "bearJelly":
+                if (panels[0].activeSelf)
+                    return;
                 targetPool = bearJellyPool;
                 break;
             case "normalJelly":
+                if (panels[1].activeSelf)
+                    return;
                 targetPool = normalJellyPool;
                 break;
             case "longJelly":
+                if (panels[2].activeSelf)
+                    return;
                 targetPool = longJellyPool;
                 break;
             case "archJelly":
+                if (panels[3].activeSelf)
+                    return;
                 targetPool = archJellyPool;
                 break;
             case "burgerJelly":
+                if (panels[4].activeSelf)
+                    return;
                 targetPool = burgerJellyPool;
                 break;
 

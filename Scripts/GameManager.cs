@@ -49,6 +49,9 @@ public class GameManager : MonoBehaviour
     [System.NonSerialized]
     public int craftingCursor = 0;
 
+    public Text noticeText;
+    public Animator noticeAnim;
+
     private void Awake()
     {
         mainCameraScript = mainCamera.gameObject.GetComponent<Camera>();
@@ -245,4 +248,19 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    // 레시피 구매 
+    public void RecipePurchase(int RCprice)
+    {
+        if (gold >= RCprice){
+            gold -= RCprice;
+            goldText.text = gold.ToString();
+        } else {
+            noticeText.text= "골드가 부족합니다! (*요구 : " + RCprice.ToString() + ")";
+            noticeAnim.ResetTrigger("notice");
+            noticeAnim.SetTrigger("notice");
+            return;
+        }
+        return;
+    }
 }
+
