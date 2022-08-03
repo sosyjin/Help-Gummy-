@@ -138,6 +138,8 @@ public class ObjectManager : MonoBehaviour
         }
     }
     GameObject [] targetPool;
+    GameObject targetPrefab;
+    Unit targetPrefabUnit;
     public void GenerateUnitObject(string objectName)
     {
         if (Time.timeScale == 0)
@@ -145,49 +147,80 @@ public class ObjectManager : MonoBehaviour
         switch(objectName) {
             case "bearJelly":
                 targetPool = bearJellyPool;
+                targetPrefab = bearJellyPrefab;
+                targetPrefabUnit = bearJellyPrefab.GetComponent<Unit>();
                 break;
             case "normalJelly":
                 targetPool = normalJellyPool;
+                targetPrefab = normalJellyPrefab;
+                targetPrefabUnit = normalJellyPrefab.GetComponent<Unit>();
                 break;
             case "longJelly":
                 targetPool = longJellyPool;
+                targetPrefab = longJellyPrefab;
+                targetPrefabUnit = longJellyPrefab.GetComponent<Unit>();
                 break;
             case "archJelly":
                 targetPool = archJellyPool;
+                targetPrefab = archJellyPrefab;
+                targetPrefabUnit = archJellyPrefab.GetComponent<Unit>();
                 break;
             case "burgerJelly":
                 targetPool = burgerJellyPool;
+                targetPrefab = burgerJellyPrefab;
+                targetPrefabUnit = burgerJellyPrefab.GetComponent<Unit>();
                 break;
 
             case "a":
                 targetPool = aPool;
+                targetPrefab = aPrefab;
+                targetPrefabUnit = aPrefab.GetComponent<Unit>();
                 break;
             case "b":
                 targetPool = bPool;
+                targetPrefab = bPrefab;
+                targetPrefabUnit = bPrefab.GetComponent<Unit>();
                 break;
             case "c":
                 targetPool = cPool;
+                targetPrefab = cPrefab;
+                targetPrefabUnit = cPrefab.GetComponent<Unit>();
                 break;
             case "d":
                 targetPool = dPool;
+                targetPrefab = dPrefab;
+                targetPrefabUnit = dPrefab.GetComponent<Unit>();
                 break;
             case "e":
                 targetPool = ePool;
+                targetPrefab = ePrefab;
+                targetPrefabUnit = ePrefab.GetComponent<Unit>();
                 break;
         }
         for (int i = 0; i < targetPool.Length; i++) {
             if (!targetPool[i].activeSelf) {
-                // 재화 소모
+                // 재화 계산
                 int sugarValue = int.Parse(sugarText.text);
                 int juiceValue = int.Parse(juiceText.text);
                 int demandGold = sugarValue * 100 + juiceValue * 100;
                 // int demandSugar = ;
                 if (gameManager.gold >= demandGold) {
+                    // 재화 소모
                     gameManager.gold -= demandGold;
                     gameManager.goldText.text = gameManager.gold.ToString();
+
+                    // 오브젝트 초기화
+                    targetPool[i].transform.position = targetPrefab.transform.position;
+                    Unit targetUnit = targetPool[i].GetComponent<Unit>();
+                    targetUnit.hp = targetPrefabUnit.hp;
+                    targetUnit.speed = targetPrefabUnit.speed;
+                    targetUnit.shield = targetPrefabUnit.shield;
+                    targetUnit.attack = targetPrefabUnit.attack;
+
+                    // 오브젝트 활성화
                     targetPool[i].SetActive(true);
                 } else {
-                    // 경고 텍스트
+                    // 재화 부족 알림
                     noticeText.text = "골드가 부족합니다! (*요구 : " + demandGold.ToString() + ")";
                     noticeAnim = noticeText.gameObject.GetComponent<Animator>();
                     noticeAnim.ResetTrigger("notice");

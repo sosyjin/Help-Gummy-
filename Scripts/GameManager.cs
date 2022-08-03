@@ -18,10 +18,8 @@ public class GameManager : MonoBehaviour
     public float maxTimer = 0;
     [System.NonSerialized]
     public int gold = 0;
-    /*
     [System.NonSerialized]
     public int sugar = 0;
-    */
     float startTimer = 0;
     float currentTimer = 0;
 
@@ -49,6 +47,9 @@ public class GameManager : MonoBehaviour
     [System.NonSerialized]
     public int craftingCursor = 0;
 
+    [Header("etc")]
+    public GameObject optionGameObject;
+
     private void Awake()
     {
         mainCameraScript = mainCamera.gameObject.GetComponent<Camera>();
@@ -72,7 +73,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 스테이지 초기화
+    // 스테이지 버튼
     public void SetStageLevel(int inputStageLevel)
     {
         // 골드 초기화
@@ -124,10 +125,17 @@ public class GameManager : MonoBehaviour
         if (Time.timeScale != 0) {
             gamePlayText.text = "▶";
             Time.timeScale = 0;
+
+            // 옵션 UI 활성화
+            optionGameObject.SetActive(true);
         } else {
             gamePlayText.text = "||";
             Time.timeScale = int.Parse(gameAccelText.text.Replace("x", string.Empty)); // "x숫자" -> "숫자" | 가공해서 시간에 대입
+
+            // 옵션 UI 비활성화
+            optionGameObject.SetActive(false);
         }
+
     }
 
     // 크래프팅 - 젤리 이미지 전환
@@ -244,5 +252,38 @@ public class GameManager : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    // 스테이지 초기화
+    public void ResetStage()
+    {
+        // 풀 내(inside)의 오브젝트 비활성화
+        for(int i = 0; i < objectPool.childCount; i++) {
+            objectPool.GetChild(i).gameObject.SetActive(false);
+        }
+
+        // 재화 초기화
+        gold = 0;
+        goldText.text = gold.ToString();
+        sugar = 0;
+        sugarText.text = sugar.ToString();
+
+        // 레시피 초기화
+
+        // Base 스탯 초기화
+
+        // 게임 재생
+        Time.timeScale = int.Parse(gameAccelText.text.Replace("x", string.Empty));
+        gamePlayText.text = "||";
+    }
+
+    // 지정된 씬으로 이동
+    public void GoToScene(int sceneIndex)
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneIndex);
+
+        // 게임 재생
+        Time.timeScale = 1;
+        gamePlayText.text = "||";
     }
 }
