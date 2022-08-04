@@ -287,14 +287,16 @@ public class GameManager : MonoBehaviour
         // 게임 재생
         Time.timeScale = 1;
         gamePlayText.text = "||";
+    }
+
     // 레시피 구매 
     public void RecipePurchase(int RCprice)
     {
-        if (gold >= RCprice){
+        if (gold >= RCprice) {
             gold -= RCprice;
             goldText.text = gold.ToString();
         } else {
-            noticeText.text= "골드가 부족합니다! (*요구 : " + RCprice.ToString() + ")";
+            noticeText.text = "골드가 부족합니다! (*요구 : " + RCprice.ToString() + ")";
             noticeAnim.ResetTrigger("notice");
             noticeAnim.SetTrigger("notice");
             return;
@@ -302,4 +304,3 @@ public class GameManager : MonoBehaviour
         return;
     }
 }
-

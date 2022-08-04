@@ -23,17 +23,17 @@ public class ObjectManager : MonoBehaviour
     [Range(30, 100)]
     public int poolSize;
 
-    GameObject[] bearJellyPool;
-    GameObject[] normalJellyPool;
-    GameObject[] longJellyPool;
-    GameObject[] archJellyPool;
-    GameObject[] burgerJellyPool;
+    GameObject [] bearJellyPool;
+    GameObject [] normalJellyPool;
+    GameObject [] longJellyPool;
+    GameObject [] archJellyPool;
+    GameObject [] burgerJellyPool;
 
-    GameObject[] aPool;
-    GameObject[] bPool;
-    GameObject[] cPool;
-    GameObject[] dPool;
-    GameObject[] ePool;
+    GameObject [] aPool;
+    GameObject [] bPool;
+    GameObject [] cPool;
+    GameObject [] dPool;
+    GameObject [] ePool;
 
     [Header("크래프팅")]
     public Text sugarText;
@@ -45,7 +45,6 @@ public class ObjectManager : MonoBehaviour
     public GameObject[] panels;
     GameManager gameManager;
     Animator noticeAnim;
-    
 
     private void Awake()
     {
@@ -150,6 +149,7 @@ public class ObjectManager : MonoBehaviour
             case "bearJelly":
                 if (panels[0].activeSelf)
                     return;
+
                 targetPool = bearJellyPool;
                 targetPrefab = bearJellyPrefab;
                 targetPrefabUnit = bearJellyPrefab.GetComponent<Unit>();
