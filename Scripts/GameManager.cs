@@ -39,13 +39,17 @@ public class GameManager : MonoBehaviour
 
     [Header("크래프팅 UI")]
     public Animator craftingAnim;
-    public Animator shopAnim;
     public Image [] craftingImages;
     public Text jellyNameText;
     public Text craftingSugarText;
     public Text craftingJuiceText;
     [System.NonSerialized]
     public int craftingCursor = 0;
+
+    [Header("상점 UI")]
+    public Animator shopAnim;
+    public GameObject[] craftingLockPanels;
+    public GameObject[] recipeButtons;
 
     [Header("etc")]
     public GameObject optionGameObject;
@@ -83,13 +87,17 @@ public class GameManager : MonoBehaviour
         gold = 0;
         goldText.text = gold.ToString();
 
-        // 스테이지 레벨 설정
-        stageLevel = inputStageLevel;
-        for (int i = 0; i < backgroundList.Length; i++) { // 전체 스테이지 배경 비활성화
+        // 전체 스테이지 배경 비활성화
+        for (int i = 0; i < backgroundList.Length; i++) {
             for (int j = 0; j < backgroundList[i].backgroundImages.Length; j++)
                 backgroundList[i].backgroundImages[j].SetActive(false);
         }
-        for (int i = 0; i < backgroundList[stageLevel].backgroundImages.Length; i++) // 선택된 스테이지 배경 활성화
+        // 스테이지 레벨 설정
+        if (inputStageLevel == -1)
+            return;
+        // 선택된 스테이지 배경 활성화
+        stageLevel = inputStageLevel;
+        for (int i = 0; i < backgroundList[stageLevel].backgroundImages.Length; i++)
             backgroundList[stageLevel].backgroundImages[i].SetActive(true);
     }
 
@@ -176,10 +184,10 @@ public class GameManager : MonoBehaviour
                 jellyNameText.text = "왕 꿈틀이";
                 break;
             case 3:
-                jellyNameText.text = "버거 젤리";
+                jellyNameText.text = "푸딩 젤리";
                 break;
             case 4:
-                jellyNameText.text = "젤리 푸딩";
+                jellyNameText.text = "버거 젤리";
                 break;
         }
     }
@@ -271,11 +279,16 @@ public class GameManager : MonoBehaviour
         sugarText.text = sugar.ToString();
 
         // 레시피 초기화
+        for(int i = 0; i < craftingLockPanels.Length; i++) {
+            craftingLockPanels[i].SetActive(true);
+            recipeButtons[i].SetActive(true);
+        }
 
         // Base 스탯 초기화
 
-        // 게임 재생
-        Time.timeScale = int.Parse(gameAccelText.text.Replace("x", string.Empty));
+        // 게임 재생 속도 초기화
+        gameAccelText.text = "x1";
+        Time.timeScale = 1f;
         gamePlayText.text = "||";
     }
 
@@ -290,16 +303,20 @@ public class GameManager : MonoBehaviour
     }
 
     // 레시피 구매 
-    public void RecipePurchase(int RCprice)
+    public void RecipePurchase(string rcprice_jellyIndex)
     {
-        if (gold >= RCprice) {
-            gold -= RCprice;
+        int rcprice = int.Parse(rcprice_jellyIndex.Split('_')[0]);
+        int jellyIndex = int.Parse(rcprice_jellyIndex.Split('_')[1]);
+
+        if (gold >= rcprice) {
+            gold -= rcprice;
             goldText.text = gold.ToString();
+            craftingLockPanels[jellyIndex].SetActive(false);
+            recipeButtons[jellyIndex].SetActive(false);
         } else {
-            noticeText.text = "골드가 부족합니다! (*요구 : " + RCprice.ToString() + ")";
+            noticeText.text = "골드가 부족합니다! (*요구 : " + rcprice.ToString() + ")";
             noticeAnim.ResetTrigger("notice");
             noticeAnim.SetTrigger("notice");
-            return;
         }
         return;
     }
