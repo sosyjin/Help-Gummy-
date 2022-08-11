@@ -34,32 +34,37 @@ public class GameManager : MonoBehaviour
     public Transform objectPool;
 
     [Header("게임 재생, 시간")]
-    public Text gamePlayText;
     public Text gameAccelText;
 
     [Header("크래프팅 UI")]
-    public Animator craftingAnim;
+    public GameObject craftingPanelObject;
     public Image [] craftingImages;
     public Text jellyNameText;
     public Text craftingSugarText;
     public Text craftingJuiceText;
     [System.NonSerialized]
     public int craftingCursor = 0;
+    Animator craftingAnim;
 
     [Header("상점 UI")]
-    public Animator shopAnim;
+    public GameObject shopPanelObject;
     public GameObject[] craftingLockPanels;
     public GameObject[] recipeButtons;
+    Animator shopAnim;
 
     [Header("etc")]
     public GameObject optionGameObject;
     public Text noticeText;
     public Animator noticeAnim;
+    public Image gameSpeedUIImage;
+    public Sprite [] gameSpeedUIImageSources;
 
     private void Awake()
     {
         mainCameraScript = mainCamera.gameObject.GetComponent<Camera>();
         startTimer = Time.time;
+        craftingAnim = craftingPanelObject.GetComponent<Animator>();
+        shopAnim = shopPanelObject.GetComponent<Animator>();
     }
     private void Update()
     {
@@ -106,8 +111,8 @@ public class GameManager : MonoBehaviour
     {
         currentTimer = Time.time - startTimer;
         if (currentTimer >= maxTimer) {
-            ResetGoldTimer();
             gold += 100;
+            ResetGoldTimer();
         }
     }
     void ResetGoldTimer()
@@ -119,33 +124,29 @@ public class GameManager : MonoBehaviour
     // 게임 가속
     public void TimeAccelalation()
     {
-        if (Time.timeScale == 0) {
-            return;
-        } else if (Time.timeScale < 4) {
-            Time.timeScale *= 2;
-            gameAccelText.text = "x" + Time.timeScale.ToString();
+        if (Time.timeScale < 4) {
+            gameSpeedUIImage.sprite = gameSpeedUIImageSources[(int)Time.timeScale++];
+            gameAccelText.text = int.Parse(gameAccelText.text + 1).ToString();
         } else {
-            Time.timeScale = 1;
-            gameAccelText.text = "x1";
+            Time.timeScale = 1f;
+            gameSpeedUIImage.sprite = gameSpeedUIImageSources[0];
+            gameAccelText.text = "1";
         }
     }
     // 게임 정지
     public void TimeStop()
     {
         if (Time.timeScale != 0) {
-            gamePlayText.text = "▶";
             Time.timeScale = 0;
 
             // 옵션 UI 활성화
             optionGameObject.SetActive(true);
         } else {
-            gamePlayText.text = "||";
-            Time.timeScale = int.Parse(gameAccelText.text.Replace("x", string.Empty)); // "x숫자" -> "숫자" | 가공해서 시간에 대입
+            Time.timeScale = int.Parse(gameAccelText.text);
 
             // 옵션 UI 비활성화
             optionGameObject.SetActive(false);
         }
-
     }
 
     // 크래프팅 - 젤리 이미지 전환
@@ -287,9 +288,21 @@ public class GameManager : MonoBehaviour
         // Base 스탯 초기화
 
         // 게임 재생 속도 초기화
-        gameAccelText.text = "x1";
+        gameSpeedUIImage.sprite = gameSpeedUIImageSources[0];
+        gameAccelText.text = "1";
         Time.timeScale = 1f;
-        gamePlayText.text = "||";
+
+        // UI 위치 초기화
+        if (craftingAnim.GetBool("panelAppear")) {
+            craftingAnim.SetBool("panelAppear", false);
+            craftingAnim.SetBool("panelDisappear", true);
+            craftingPanelObject.transform.position = new Vector3(500f, craftingPanelObject.transform.position.y, craftingPanelObject.transform.position.z);
+        }
+        if (shopAnim.GetBool("Appear")) {
+            shopAnim.SetBool("Appear", false);
+            shopAnim.SetBool("Disappear", true);
+            shopPanelObject.transform.position = new Vector3(-500f, shopPanelObject.transform.position.y, shopPanelObject.transform.position.z);
+        }
     }
 
     // 지정된 씬으로 이동
@@ -297,9 +310,8 @@ public class GameManager : MonoBehaviour
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneIndex);
 
-        // 게임 재생
-        Time.timeScale = 1;
-        gamePlayText.text = "||";
+        // 게임 속도 초기화
+        Time.timeScale = 1f;
     }
 
     // 레시피 구매 

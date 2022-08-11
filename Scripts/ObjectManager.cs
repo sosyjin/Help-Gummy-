@@ -49,6 +49,7 @@ public class ObjectManager : MonoBehaviour
     private void Awake()
     {
         gameManager = gameManagerObject.GetComponent<GameManager>();
+        noticeAnim = noticeText.GetComponent<Animator>();
 
         // 아군 유닛 풀
         bearJellyPool = new GameObject[poolSize];
@@ -147,37 +148,56 @@ public class ObjectManager : MonoBehaviour
             return;
         switch(objectName) {
             case "bearJelly":
-                if (panels[0].activeSelf)
+                if (panels[0].activeSelf) { // 레시피 미구매 시
+                    noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
+                    noticeAnim.ResetTrigger("notice");
+                    noticeAnim.SetTrigger("notice");
                     return;
-
+                }
                 targetPool = bearJellyPool;
                 targetPrefab = bearJellyPrefab;
                 targetPrefabUnit = bearJellyPrefab.GetComponent<Unit>();
                 break;
             case "normalJelly":
-                if (panels[1].activeSelf)
+                if (panels[1].activeSelf) { // 레시피 미구매 시
+                    noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
+                    noticeAnim.ResetTrigger("notice");
+                    noticeAnim.SetTrigger("notice");
                     return;
+                }
                 targetPool = normalJellyPool;
                 targetPrefab = normalJellyPrefab;
                 targetPrefabUnit = normalJellyPrefab.GetComponent<Unit>();
                 break;
             case "longJelly":
-                if (panels[2].activeSelf)
+                if (panels[2].activeSelf) { // 레시피 미구매 시
+                    noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
+                    noticeAnim.ResetTrigger("notice");
+                    noticeAnim.SetTrigger("notice");
                     return;
+                }
                 targetPool = longJellyPool;
                 targetPrefab = longJellyPrefab;
                 targetPrefabUnit = longJellyPrefab.GetComponent<Unit>();
                 break;
             case "archJelly":
-                if (panels[3].activeSelf)
+                if (panels[3].activeSelf) { // 레시피 미구매 시
+                    noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
+                    noticeAnim.ResetTrigger("notice");
+                    noticeAnim.SetTrigger("notice");
                     return;
+                }
                 targetPool = archJellyPool;
                 targetPrefab = archJellyPrefab;
                 targetPrefabUnit = archJellyPrefab.GetComponent<Unit>();
                 break;
             case "burgerJelly":
-                if (panels[4].activeSelf)
+                if (panels[4].activeSelf) { // 레시피 미구매 시
+                    noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
+                    noticeAnim.ResetTrigger("notice");
+                    noticeAnim.SetTrigger("notice");
                     return;
+                }
                 targetPool = burgerJellyPool;
                 targetPrefab = burgerJellyPrefab;
                 targetPrefabUnit = burgerJellyPrefab.GetComponent<Unit>();
@@ -234,7 +254,6 @@ public class ObjectManager : MonoBehaviour
                 } else {
                     // 재화 부족 알림
                     noticeText.text = "골드가 부족합니다! (*요구 : " + demandGold.ToString() + ")";
-                    noticeAnim = noticeText.gameObject.GetComponent<Animator>();
                     noticeAnim.ResetTrigger("notice");
                     noticeAnim.SetTrigger("notice");
                     return;
