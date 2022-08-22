@@ -472,21 +472,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c2999b7335b34a438b7901cd948fe24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bearJellyPrefab: {fileID: 8637319066142202155, guid: f02aa3bc90748744b990f3d773fdd849,
+  giantJellyPrefab: {fileID: 6527333920622505520, guid: dd98a66018e84d740bd7f195cc54e360,
     type: 3}
-  normalJellyPrefab: {fileID: 2280382196467782775, guid: 29cccf5fddf0c7a4ba483c6e2e34b47f,
+  normalJellyPrefab: {fileID: 2014375683240142943, guid: 43e16f9b657cb5e498b242c9fc94b73f,
     type: 3}
   longJellyPrefab: {fileID: 2111780649573330173, guid: dece2993401573740a4d5a494de75545,
     type: 3}
-  archJellyPrefab: {fileID: 8633031942578904838, guid: 615b8f59f17087b45a17df6c419ec38a,
+  rangedJellyPrefab: {fileID: 4122050615489544947, guid: 77d4a8bc62a86c745a55a7b7342226b7,
     type: 3}
-  burgerJellyPrefab: {fileID: 6989402812945628802, guid: c040aab614e317b45b465cb983e46b8c,
+  burgerJellyPrefab: {fileID: 5711664657100184826, guid: 2021edf84a7458d4a95bd92bb57b628f,
     type: 3}
-  aPrefab: {fileID: 8637319066142202155, guid: f02aa3bc90748744b990f3d773fdd849, type: 3}
-  bPrefab: {fileID: 2280382196467782775, guid: 29cccf5fddf0c7a4ba483c6e2e34b47f, type: 3}
+  aPrefab: {fileID: 8167988790643775757, guid: d287730f8ad3e974fa5cf66fcac24111, type: 3}
+  bPrefab: {fileID: 3002811577139120695, guid: a63aac88735e4b24ea9dab1f3cc26723, type: 3}
   cPrefab: {fileID: 2111780649573330173, guid: dece2993401573740a4d5a494de75545, type: 3}
-  dPrefab: {fileID: 8633031942578904838, guid: 615b8f59f17087b45a17df6c419ec38a, type: 3}
-  ePrefab: {fileID: 6989402812945628802, guid: c040aab614e317b45b465cb983e46b8c, type: 3}
+  dPrefab: {fileID: 2193174510841484555, guid: e93f10013c6303e4d899741edcc368ca, type: 3}
+  ePrefab: {fileID: 5378060050378908571, guid: 161be1ad2bf88234e9eb5ec6b8a268ec, type: 3}
   objectPool: {fileID: 475379389}
   poolSize: 30
   sugarText: {fileID: 1098874032}

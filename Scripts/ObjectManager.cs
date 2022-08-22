@@ -6,10 +6,10 @@ using UnityEngine;
 public class ObjectManager : MonoBehaviour
 {
     [Header("유닛 프리팹")]
-    public GameObject bearJellyPrefab;
+    public GameObject giantJellyPrefab;
     public GameObject normalJellyPrefab;
     public GameObject longJellyPrefab;
-    public GameObject archJellyPrefab;
+    public GameObject rangedJellyPrefab;
     public GameObject burgerJellyPrefab;
     [Space]
     public GameObject aPrefab;
@@ -23,10 +23,10 @@ public class ObjectManager : MonoBehaviour
     [Range(30, 100)]
     public int poolSize;
 
-    GameObject [] bearJellyPool;
+    GameObject [] giantJellyPool;
     GameObject [] normalJellyPool;
     GameObject [] longJellyPool;
-    GameObject [] archJellyPool;
+    GameObject [] rangedJellyPool;
     GameObject [] burgerJellyPool;
 
     GameObject [] aPool;
@@ -52,10 +52,10 @@ public class ObjectManager : MonoBehaviour
         noticeAnim = noticeText.GetComponent<Animator>();
 
         // 아군 유닛 풀
-        bearJellyPool = new GameObject[poolSize];
+        giantJellyPool = new GameObject[poolSize];
         normalJellyPool = new GameObject[poolSize];
         longJellyPool = new GameObject[poolSize];
-        archJellyPool = new GameObject[poolSize];
+        rangedJellyPool = new GameObject[poolSize];
         burgerJellyPool = new GameObject[poolSize];
 
         // 적군 유닛 풀
@@ -76,10 +76,10 @@ public class ObjectManager : MonoBehaviour
         SpriteRenderer spriteRenderer;
 
         for(int i = 0; i < poolSize; i++) {
-            bearJellyPool[i] = Instantiate(bearJellyPrefab, new Vector2(-6.5f, bearJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
-            bearJellyPool[i].SetActive(false);
-            bearJellyPool[i].transform.parent = objectPool.transform;
-            spriteRenderer = bearJellyPool[i].gameObject.GetComponent<SpriteRenderer>();
+            giantJellyPool[i] = Instantiate(giantJellyPrefab, new Vector2(-6.5f, giantJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
+            giantJellyPool[i].SetActive(false);
+            giantJellyPool[i].transform.parent = objectPool.transform;
+            spriteRenderer = giantJellyPool[i].gameObject.GetComponent<SpriteRenderer>();
             spriteRenderer.sortingOrder = -1;
 
             normalJellyPool[i] = Instantiate(normalJellyPrefab, new Vector2(-6.5f, normalJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
@@ -94,10 +94,10 @@ public class ObjectManager : MonoBehaviour
             spriteRenderer = longJellyPool[i].gameObject.GetComponent<SpriteRenderer>();
             spriteRenderer.sortingOrder = -1;
 
-            archJellyPool[i] = Instantiate(archJellyPrefab, new Vector2(-6.5f, archJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
-            archJellyPool[i].SetActive(false);
-            archJellyPool[i].transform.parent = objectPool.transform;
-            spriteRenderer = archJellyPool[i].gameObject.GetComponent<SpriteRenderer>();
+            rangedJellyPool[i] = Instantiate(rangedJellyPrefab, new Vector2(-6.5f, rangedJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
+            rangedJellyPool[i].SetActive(false);
+            rangedJellyPool[i].transform.parent = objectPool.transform;
+            spriteRenderer = rangedJellyPool[i].gameObject.GetComponent<SpriteRenderer>();
             spriteRenderer.sortingOrder = -1;
 
             burgerJellyPool[i] = Instantiate(burgerJellyPrefab, new Vector2(-6.5f, burgerJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
@@ -141,22 +141,24 @@ public class ObjectManager : MonoBehaviour
     }
     GameObject [] targetPool;
     GameObject targetPrefab;
-    Unit targetPrefabUnit;
+    JellyUnit targetPrefabJellyUnit;
+    CandyUnit targetPrefabCandyUnit;
     public void GenerateUnitObject(string objectName)
     {
         if (Time.timeScale == 0)
             return;
-        switch(objectName) {
-            case "bearJelly":
+
+        switch (objectName) {
+            case "giantJelly":
                 if (panels[0].activeSelf) { // 레시피 미구매 시
                     noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
                     noticeAnim.ResetTrigger("notice");
                     noticeAnim.SetTrigger("notice");
                     return;
                 }
-                targetPool = bearJellyPool;
-                targetPrefab = bearJellyPrefab;
-                targetPrefabUnit = bearJellyPrefab.GetComponent<Unit>();
+                targetPool = giantJellyPool;
+                targetPrefab = giantJellyPrefab;
+                targetPrefabJellyUnit = giantJellyPrefab.GetComponent<JellyUnit>();
                 break;
             case "normalJelly":
                 if (panels[1].activeSelf) { // 레시피 미구매 시
@@ -167,7 +169,7 @@ public class ObjectManager : MonoBehaviour
                 }
                 targetPool = normalJellyPool;
                 targetPrefab = normalJellyPrefab;
-                targetPrefabUnit = normalJellyPrefab.GetComponent<Unit>();
+                targetPrefabJellyUnit = normalJellyPrefab.GetComponent<JellyUnit>();
                 break;
             case "longJelly":
                 if (panels[2].activeSelf) { // 레시피 미구매 시
@@ -178,18 +180,18 @@ public class ObjectManager : MonoBehaviour
                 }
                 targetPool = longJellyPool;
                 targetPrefab = longJellyPrefab;
-                targetPrefabUnit = longJellyPrefab.GetComponent<Unit>();
+                targetPrefabJellyUnit = longJellyPrefab.GetComponent<JellyUnit>();
                 break;
-            case "archJelly":
+            case "rangedJelly":
                 if (panels[3].activeSelf) { // 레시피 미구매 시
                     noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
                     noticeAnim.ResetTrigger("notice");
                     noticeAnim.SetTrigger("notice");
                     return;
                 }
-                targetPool = archJellyPool;
-                targetPrefab = archJellyPrefab;
-                targetPrefabUnit = archJellyPrefab.GetComponent<Unit>();
+                targetPool = rangedJellyPool;
+                targetPrefab = rangedJellyPrefab;
+                targetPrefabJellyUnit = rangedJellyPrefab.GetComponent<JellyUnit>();
                 break;
             case "burgerJelly":
                 if (panels[4].activeSelf) { // 레시피 미구매 시
@@ -200,71 +202,75 @@ public class ObjectManager : MonoBehaviour
                 }
                 targetPool = burgerJellyPool;
                 targetPrefab = burgerJellyPrefab;
-                targetPrefabUnit = burgerJellyPrefab.GetComponent<Unit>();
+                targetPrefabJellyUnit = burgerJellyPrefab.GetComponent<JellyUnit>();
                 break;
 
             case "a":
                 targetPool = aPool;
                 targetPrefab = aPrefab;
-                targetPrefabUnit = aPrefab.GetComponent<Unit>();
+                targetPrefabCandyUnit = aPrefab.GetComponent<CandyUnit>();
                 break;
             case "b":
                 targetPool = bPool;
                 targetPrefab = bPrefab;
-                targetPrefabUnit = bPrefab.GetComponent<Unit>();
+                targetPrefabCandyUnit = bPrefab.GetComponent<CandyUnit>();
                 break;
             case "c":
                 targetPool = cPool;
                 targetPrefab = cPrefab;
-                targetPrefabUnit = cPrefab.GetComponent<Unit>();
+                targetPrefabCandyUnit = cPrefab.GetComponent<CandyUnit>();
                 break;
             case "d":
                 targetPool = dPool;
                 targetPrefab = dPrefab;
-                targetPrefabUnit = dPrefab.GetComponent<Unit>();
+                targetPrefabCandyUnit = dPrefab.GetComponent<CandyUnit>();
                 break;
             case "e":
                 targetPool = ePool;
                 targetPrefab = ePrefab;
-                targetPrefabUnit = ePrefab.GetComponent<Unit>();
+                targetPrefabCandyUnit = ePrefab.GetComponent<CandyUnit>();
                 break;
         }
         for (int i = 0; i < targetPool.Length; i++) {
             if (!targetPool[i].activeSelf) {
-                // 재화 계산
-                int sugarValue = int.Parse(sugarText.text);
-                int juiceValue = int.Parse(juiceText.text);
-                int demandGold = sugarValue * 100 + juiceValue * 100;
-                // int demandSugar = ;
-                if (gameManager.gold >= demandGold) {
-                    // 재화 소모
-                    gameManager.gold -= demandGold;
-                    gameManager.goldText.text = gameManager.gold.ToString();
+                if(objectName.Contains("Jelly")) {
+                    // 재화 계산
+                    int sugarValue = int.Parse(sugarText.text);
+                    int juiceValue = int.Parse(juiceText.text);
+                    int demandGold = sugarValue * 100 + juiceValue * 100;
+                    // int demandSugar = ;
+                    if (gameManager.gold >= demandGold) {
+                        // 재화 소모
+                        gameManager.gold -= demandGold;
+                        gameManager.goldText.text = gameManager.gold.ToString();
 
-                    // 오브젝트 초기화
-                    targetPool[i].transform.position = targetPrefab.transform.position;
-                    Unit targetUnit = targetPool[i].GetComponent<Unit>();
-                    targetUnit.hp = targetPrefabUnit.hp;
-                    targetUnit.speed = targetPrefabUnit.speed;
-                    targetUnit.shield = targetPrefabUnit.shield;
-                    targetUnit.attack = targetPrefabUnit.attack;
+                        // 오브젝트 초기화
+                        targetPool[i].transform.position = targetPrefab.transform.position;
+                        JellyUnit targetUnit = targetPool[i].GetComponent<JellyUnit>();
+                        targetUnit.hp = targetPrefabJellyUnit.hp;
+                        targetUnit.moveSpeed = targetPrefabJellyUnit.moveSpeed;
+                        targetUnit.atkDmg = targetPrefabJellyUnit.atkDmg;
 
-                    // 오브젝트 활성화
-                    targetPool[i].SetActive(true);
+                        // 오브젝트 활성화
+                        targetPool[i].SetActive(true);
+                    } else {
+                        // 재화 부족 알림
+                        noticeText.text = "골드가 부족합니다! (*요구 : " + demandGold.ToString() + ")";
+                        noticeAnim.ResetTrigger("notice");
+                        noticeAnim.SetTrigger("notice");
+                        return;
+                    }
+
+                    // 크래프팅 설정 적용
+                    JellyUnit jellyUnit = targetPool[i].gameObject.GetComponent<JellyUnit>();
+                    jellyUnit.atkDmg += juiceValue;
+                    jellyUnit.hp += sugarValue;
+                    jellyUnit.gameObject.transform.localScale = new Vector3(0.4f + sugarValue * 0.03f, 0.4f + sugarValue * 0.03f, 1);
+                    jellyUnit.gameObject.transform.position += new Vector3(0, sugarValue * 0.024f, 0);
+
                 } else {
-                    // 재화 부족 알림
-                    noticeText.text = "골드가 부족합니다! (*요구 : " + demandGold.ToString() + ")";
-                    noticeAnim.ResetTrigger("notice");
-                    noticeAnim.SetTrigger("notice");
-                    return;
+                    // 캔디 세력 유닛 생성 알고리즘 적용
                 }
-
-                // 크래프팅 설정 적용
-                Unit unit = targetPool[i].gameObject.GetComponent<Unit>();
-                unit.attack += juiceValue;
-                unit.hp += sugarValue;
-                unit.gameObject.transform.localScale = new Vector3(0.4f + sugarValue * 0.03f, 0.4f + sugarValue * 0.03f, 1);
-                unit.gameObject.transform.position += new Vector3(0, sugarValue * 0.024f, 0);
                 
                 return;
             }
@@ -280,7 +286,7 @@ public class ObjectManager : MonoBehaviour
 
         switch(craftingCursor) {
             case 0:
-                objectName = "bearJelly";
+                objectName = "giantJelly";
                 break;
             case 1:
                 objectName = "normalJelly";
@@ -289,7 +295,7 @@ public class ObjectManager : MonoBehaviour
                 objectName = "longJelly";
                 break;
             case 3:
-                objectName = "archJelly";
+                objectName = "rangedJelly";
                 break;
             case 4:
                 objectName = "burgerJelly";
