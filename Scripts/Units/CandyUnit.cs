@@ -25,7 +25,7 @@ public class CandyUnit : MonoBehaviour
     [Header("etc")]
     public GameObject bullet;
 
-    float knockDis;
+    float bulletForce;
     float atkTimer;
     float skillTimer;
 
@@ -75,7 +75,7 @@ public class CandyUnit : MonoBehaviour
                     case 1:
                         // 일반 공격
                         if (atkTimer <= 0) {
-                            GameObject bulletcopy = Instantiate(bullet, gameObject.transform.position, UnityEngine.Quaternion.identity);
+                            Instantiate(bullet, gameObject.transform.position, UnityEngine.Quaternion.identity);
                             atkTimer = atkCoolTime;
                         }
                         break;
@@ -90,8 +90,7 @@ public class CandyUnit : MonoBehaviour
         skillTimer -= Time.deltaTime;
 
         // 사망 처리
-        if (hp <= 0)
-        {
+        if (hp <= 0) {
             UnitDie();
         }
     }

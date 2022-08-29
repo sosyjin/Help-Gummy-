@@ -24,7 +24,7 @@ public class JellyUnit : MonoBehaviour
     [Header("etc")]
     public GameObject bullet;
 
-    float knockDis;
+    float bulletForce;
     float atkTimer;
     float skillTimer;
 
@@ -89,7 +89,7 @@ public class JellyUnit : MonoBehaviour
                                 // 밀치기 공격
                                 if (skillTimer <= 0) {
                                     rayHitUnit.hp -= skillDmg;
-                                    raycast.rigidbody.AddForceAtPosition(transform.right * knockDis, raycast.collider.transform.position);
+                                    raycast.rigidbody.AddForceAtPosition(transform.right * bulletForce, raycast.collider.transform.position);
                                     skillTimer = skillCoolTime;
                                 }
                                 break;

@@ -49,7 +49,8 @@ public class GameManager : MonoBehaviour
     [Header("상점 UI")]
     public GameObject shopPanelObject;
     public GameObject[] craftingLockPanels;
-    public GameObject[] recipeButtons;
+    public Image[] shopingImages;
+    int shopingCursor = 0;
     Animator shopAnim;
 
     [Header("etc")]
@@ -149,7 +150,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 크래프팅 - 젤리 이미지 전환
+    // 크래프팅, 상점 - 젤리 이미지 전환
     public void ChangeCraftingImage(string buttonType)
     {
         // 모든 이미지 비활성화
@@ -182,18 +183,39 @@ public class GameManager : MonoBehaviour
                 jellyNameText.text = "젤리빈";
                 break;
             case 2:
-                jellyNameText.text = "왕 꿈틀이";
-                break;
-            case 3:
                 jellyNameText.text = "푸딩 젤리";
                 break;
-            case 4:
+            case 3:
                 jellyNameText.text = "버거 젤리";
                 break;
         }
     }
+    public void ChangeShopingImages(string buttonType)
+    {
+        // 모든 이미지 비활성화
+        for (int i = 0; i < shopingImages.Length; i++)
+            shopingImages[i].gameObject.SetActive(false);
 
-    // 크래프팅 - UI 애니메이션
+        // 선택된 이미지 활성화
+        switch (buttonType)
+        {
+            case "left":
+                if (shopingCursor == 0)
+                    shopingCursor = shopingImages.Length - 1;
+                else
+                    shopingCursor -= 1;
+                break;
+            case "right":                                             
+                if (shopingCursor == shopingImages.Length - 1)        
+                    shopingCursor = 0;
+                else
+                    shopingCursor += 1;
+                break;
+        }
+        shopingImages[shopingCursor].gameObject.SetActive(true);
+    }
+
+    // 크래프팅, 상점 - UI 애니메이션
     public void PlayCraftingPanelAnimation()
     {
         if(craftingAnim.GetBool("panelAppear")) {
@@ -221,7 +243,7 @@ public class GameManager : MonoBehaviour
         string targetType = buttonValue.Split('_')[0];
         string buttonType = buttonValue.Split('_')[1];
         Text targetText;
-        int textValue = 0;
+        int textValue;
 
         switch (targetType) {
             case "sugar":
@@ -282,7 +304,7 @@ public class GameManager : MonoBehaviour
         // 레시피 초기화
         for(int i = 0; i < craftingLockPanels.Length; i++) {
             craftingLockPanels[i].SetActive(true);
-            recipeButtons[i].SetActive(true);
+            //
         }
 
         // Base 스탯 초기화
@@ -315,16 +337,42 @@ public class GameManager : MonoBehaviour
     }
 
     // 레시피 구매 
-    public void RecipePurchase(string rcprice_jellyIndex)
+    public void RecipePurchase()
     {
-        int rcprice = int.Parse(rcprice_jellyIndex.Split('_')[0]);
-        int jellyIndex = int.Parse(rcprice_jellyIndex.Split('_')[1]);
+        // 재구매 방지
+        if (!craftingLockPanels[shopingCursor].activeSelf) {
+            noticeText.text = "이미 구매하신 품목입니다.";
+            noticeAnim.ResetTrigger("notice");
+            noticeAnim.SetTrigger("notice");
+            return;
+        }
+
+        // 레시피 가격 불러오기
+        int rcprice;
+        switch (shopingCursor)
+        {
+            case 0:
+                rcprice = 100;
+                break;
+            case 1:
+                rcprice = 200;
+                break;
+            case 2:
+                rcprice = 300;
+                break;
+            case 3:
+                rcprice = 400;
+                break;
+            default:
+                rcprice = 0;
+                break;
+        }
 
         if (gold >= rcprice) {
             gold -= rcprice;
             goldText.text = gold.ToString();
-            craftingLockPanels[jellyIndex].SetActive(false);
-            recipeButtons[jellyIndex].SetActive(false);
+            craftingLockPanels[shopingCursor].SetActive(false);
+            // SOLD OUT 표기
         } else {
             noticeText.text = "골드가 부족합니다! (*요구 : " + rcprice.ToString() + ")";
             noticeAnim.ResetTrigger("notice");

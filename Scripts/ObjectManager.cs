@@ -8,7 +8,6 @@ public class ObjectManager : MonoBehaviour
     [Header("유닛 프리팹")]
     public GameObject giantJellyPrefab;
     public GameObject normalJellyPrefab;
-    public GameObject longJellyPrefab;
     public GameObject rangedJellyPrefab;
     public GameObject burgerJellyPrefab;
     [Space]
@@ -16,7 +15,6 @@ public class ObjectManager : MonoBehaviour
     public GameObject bPrefab;
     public GameObject cPrefab;
     public GameObject dPrefab;
-    public GameObject ePrefab;
 
     [Header("오브젝트 풀")]
     public GameObject objectPool;
@@ -25,7 +23,6 @@ public class ObjectManager : MonoBehaviour
 
     GameObject [] giantJellyPool;
     GameObject [] normalJellyPool;
-    GameObject [] longJellyPool;
     GameObject [] rangedJellyPool;
     GameObject [] burgerJellyPool;
 
@@ -33,7 +30,6 @@ public class ObjectManager : MonoBehaviour
     GameObject [] bPool;
     GameObject [] cPool;
     GameObject [] dPool;
-    GameObject [] ePool;
 
     [Header("크래프팅")]
     public Text sugarText;
@@ -54,7 +50,6 @@ public class ObjectManager : MonoBehaviour
         // 아군 유닛 풀
         giantJellyPool = new GameObject[poolSize];
         normalJellyPool = new GameObject[poolSize];
-        longJellyPool = new GameObject[poolSize];
         rangedJellyPool = new GameObject[poolSize];
         burgerJellyPool = new GameObject[poolSize];
 
@@ -63,7 +58,6 @@ public class ObjectManager : MonoBehaviour
         bPool = new GameObject[poolSize];
         cPool = new GameObject[poolSize];
         dPool = new GameObject[poolSize];
-        ePool = new GameObject[poolSize];
 
         // 풀 생성
         GeneratePool();
@@ -86,12 +80,6 @@ public class ObjectManager : MonoBehaviour
             normalJellyPool[i].SetActive(false);
             normalJellyPool[i].transform.parent = objectPool.transform;
             spriteRenderer = normalJellyPool[i].gameObject.GetComponent<SpriteRenderer>();
-            spriteRenderer.sortingOrder = -1;
-
-            longJellyPool[i] = Instantiate(longJellyPrefab, new Vector2(-6.5f, longJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
-            longJellyPool[i].SetActive(false);
-            longJellyPool[i].transform.parent = objectPool.transform;
-            spriteRenderer = longJellyPool[i].gameObject.GetComponent<SpriteRenderer>();
             spriteRenderer.sortingOrder = -1;
 
             rangedJellyPool[i] = Instantiate(rangedJellyPrefab, new Vector2(-6.5f, rangedJellyPrefab.transform.position.y), UnityEngine.Quaternion.identity);
@@ -131,12 +119,6 @@ public class ObjectManager : MonoBehaviour
             dPool[i].transform.parent = objectPool.transform;
             spriteRenderer = dPool[i].gameObject.GetComponent<SpriteRenderer>();
             spriteRenderer.sortingOrder = -1;
-
-            ePool[i] = Instantiate(ePrefab, new Vector2(6.5f, ePrefab.transform.position.y), UnityEngine.Quaternion.identity);
-            ePool[i].SetActive(false);
-            ePool[i].transform.parent = objectPool.transform;
-            spriteRenderer = ePool[i].gameObject.GetComponent<SpriteRenderer>();
-            spriteRenderer.sortingOrder = -1;
         }
     }
     GameObject [] targetPool;
@@ -171,19 +153,8 @@ public class ObjectManager : MonoBehaviour
                 targetPrefab = normalJellyPrefab;
                 targetPrefabJellyUnit = normalJellyPrefab.GetComponent<JellyUnit>();
                 break;
-            case "longJelly":
-                if (panels[2].activeSelf) { // 레시피 미구매 시
-                    noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
-                    noticeAnim.ResetTrigger("notice");
-                    noticeAnim.SetTrigger("notice");
-                    return;
-                }
-                targetPool = longJellyPool;
-                targetPrefab = longJellyPrefab;
-                targetPrefabJellyUnit = longJellyPrefab.GetComponent<JellyUnit>();
-                break;
             case "rangedJelly":
-                if (panels[3].activeSelf) { // 레시피 미구매 시
+                if (panels[2].activeSelf) { // 레시피 미구매 시
                     noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
                     noticeAnim.ResetTrigger("notice");
                     noticeAnim.SetTrigger("notice");
@@ -194,7 +165,7 @@ public class ObjectManager : MonoBehaviour
                 targetPrefabJellyUnit = rangedJellyPrefab.GetComponent<JellyUnit>();
                 break;
             case "burgerJelly":
-                if (panels[4].activeSelf) { // 레시피 미구매 시
+                if (panels[3].activeSelf) { // 레시피 미구매 시
                     noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
                     noticeAnim.ResetTrigger("notice");
                     noticeAnim.SetTrigger("notice");
@@ -224,11 +195,6 @@ public class ObjectManager : MonoBehaviour
                 targetPool = dPool;
                 targetPrefab = dPrefab;
                 targetPrefabCandyUnit = dPrefab.GetComponent<CandyUnit>();
-                break;
-            case "e":
-                targetPool = ePool;
-                targetPrefab = ePrefab;
-                targetPrefabCandyUnit = ePrefab.GetComponent<CandyUnit>();
                 break;
         }
         for (int i = 0; i < targetPool.Length; i++) {
@@ -279,9 +245,9 @@ public class ObjectManager : MonoBehaviour
     }
 
     // Generate Unit 설정
-    public void SetGenerateUnit()
+    public void SetGenerateUnit(bool isUnitTypeJelly)
     {
-        int craftingCursor = gameManager.craftingCursor;
+        int craftingCursor = isUnitTypeJelly ? gameManager.craftingCursor : 1 + 4/*candyAlgorithm.craftingCursor + 4 정도로 수정하면 됨*/;
         string objectName = "";
 
         switch(craftingCursor) {
@@ -292,12 +258,9 @@ public class ObjectManager : MonoBehaviour
                 objectName = "normalJelly";
                 break;
             case 2:
-                objectName = "longJelly";
-                break;
-            case 3:
                 objectName = "rangedJelly";
                 break;
-            case 4:
+            case 3:
                 objectName = "burgerJelly";
                 break;
         }
