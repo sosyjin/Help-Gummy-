@@ -134,6 +134,7 @@ public class ObjectManager : MonoBehaviour
             case "giantJelly":
                 if (panels[0].activeSelf) { // 레시피 미구매 시
                     noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
+                    noticeAnim.speed = 1 / Time.timeScale;
                     noticeAnim.ResetTrigger("notice");
                     noticeAnim.SetTrigger("notice");
                     return;
@@ -145,6 +146,7 @@ public class ObjectManager : MonoBehaviour
             case "normalJelly":
                 if (panels[1].activeSelf) { // 레시피 미구매 시
                     noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
+                    noticeAnim.speed = 1 / Time.timeScale;
                     noticeAnim.ResetTrigger("notice");
                     noticeAnim.SetTrigger("notice");
                     return;
@@ -156,6 +158,7 @@ public class ObjectManager : MonoBehaviour
             case "rangedJelly":
                 if (panels[2].activeSelf) { // 레시피 미구매 시
                     noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
+                    noticeAnim.speed = 1 / Time.timeScale;
                     noticeAnim.ResetTrigger("notice");
                     noticeAnim.SetTrigger("notice");
                     return;
@@ -167,6 +170,7 @@ public class ObjectManager : MonoBehaviour
             case "burgerJelly":
                 if (panels[3].activeSelf) { // 레시피 미구매 시
                     noticeText.text = "젤리를 생산하려면 레시피를 구매해야 합니다. (*상점)";
+                    noticeAnim.speed = 1 / Time.timeScale;
                     noticeAnim.ResetTrigger("notice");
                     noticeAnim.SetTrigger("notice");
                     return;
@@ -222,6 +226,7 @@ public class ObjectManager : MonoBehaviour
                     } else {
                         // 재화 부족 알림
                         noticeText.text = "골드가 부족합니다! (*요구 : " + demandGold.ToString() + ")";
+                        noticeAnim.speed = 1 / Time.timeScale;
                         noticeAnim.ResetTrigger("notice");
                         noticeAnim.SetTrigger("notice");
                         return;
