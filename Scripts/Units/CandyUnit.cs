@@ -82,7 +82,7 @@ public class CandyUnit : MonoBehaviour
                 }
             }
         }
-        else if (raycast.collider.tag != "Candy") { // 이동
+        else { // 이동
             transform.position += Time.deltaTime * moveSpeed * new Vector3(-1, 0, 0);
         }
 

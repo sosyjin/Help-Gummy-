@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
     // 게임 가속
     public void TimeAccelalation()
     {
-        if (Time.timeScale < 4) {
+        if (Time.timeScale < 3) {
             gameSpeedUIImage.sprite = gameSpeedUIImageSources[(int)Time.timeScale++];
             gameAccelText.text = int.Parse(gameAccelText.text + 1).ToString();
         } else {

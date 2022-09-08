@@ -39,12 +39,15 @@ public class ObjectManager : MonoBehaviour
     public GameObject gameManagerObject;
     public Text noticeText;
     public GameObject[] panels;
+    public GameObject enemyAlgorithmObejct;
     GameManager gameManager;
+    EnemyAlgorithm enemyAlgorithm;
     Animator noticeAnim;
 
     private void Awake()
     {
         gameManager = gameManagerObject.GetComponent<GameManager>();
+        enemyAlgorithm = enemyAlgorithmObejct.GetComponent<EnemyAlgorithm>();
         noticeAnim = noticeText.GetComponent<Animator>();
 
         // 아군 유닛 풀
@@ -180,22 +183,22 @@ public class ObjectManager : MonoBehaviour
                 targetPrefabJellyUnit = burgerJellyPrefab.GetComponent<JellyUnit>();
                 break;
 
-            case "a":
+            case "caneCandy":
                 targetPool = aPool;
                 targetPrefab = aPrefab;
                 targetPrefabCandyUnit = aPrefab.GetComponent<CandyUnit>();
                 break;
-            case "b":
+            case "normalCandy":
                 targetPool = bPool;
                 targetPrefab = bPrefab;
                 targetPrefabCandyUnit = bPrefab.GetComponent<CandyUnit>();
                 break;
-            case "c":
+            case "rockCandy":
                 targetPool = cPool;
                 targetPrefab = cPrefab;
                 targetPrefabCandyUnit = cPrefab.GetComponent<CandyUnit>();
                 break;
-            case "d":
+            case "rangedCandy":
                 targetPool = dPool;
                 targetPrefab = dPrefab;
                 targetPrefabCandyUnit = dPrefab.GetComponent<CandyUnit>();
@@ -236,11 +239,29 @@ public class ObjectManager : MonoBehaviour
                     JellyUnit jellyUnit = targetPool[i].gameObject.GetComponent<JellyUnit>();
                     jellyUnit.atkDmg += juiceValue;
                     jellyUnit.hp += sugarValue;
+
+                    // 유닛 생성 위치 조정
                     jellyUnit.gameObject.transform.localScale = new Vector3(0.4f + sugarValue * 0.03f, 0.4f + sugarValue * 0.03f, 1);
                     jellyUnit.gameObject.transform.position += new Vector3(0, sugarValue * 0.024f, 0);
 
                 } else {
-                    // 캔디 세력 유닛 생성 알고리즘 적용
+                    // 오브젝트 초기화
+                    targetPool[i].transform.position = targetPrefab.transform.position;
+                    CandyUnit targetUnit = targetPool[i].GetComponent<CandyUnit>();
+                    targetUnit.hp = targetPrefabCandyUnit.hp;
+                    targetUnit.moveSpeed = targetPrefabCandyUnit.moveSpeed;
+                    targetUnit.atkDmg = targetPrefabCandyUnit.atkDmg;
+
+                    // 크래프팅 적용
+                    targetUnit.atkDmg += enemyAlgorithm.juiceValue;
+                    targetUnit.hp += enemyAlgorithm.sugarValue;
+
+                    // 유닛 생성 위치 조정
+                    targetUnit.gameObject.transform.localScale = new Vector3(0.4f + enemyAlgorithm.sugarValue * 0.03f, 0.4f + enemyAlgorithm.sugarValue * 0.03f, 1);
+                    targetUnit.gameObject.transform.position += new Vector3(0, enemyAlgorithm.sugarValue * 0.024f, 0);
+
+                    // 오브젝트 활성화
+                    targetPool[i].SetActive(true);
                 }
                 
                 return;
@@ -252,7 +273,7 @@ public class ObjectManager : MonoBehaviour
     // Generate Unit 설정
     public void SetGenerateUnit(bool isUnitTypeJelly)
     {
-        int craftingCursor = isUnitTypeJelly ? gameManager.craftingCursor : 1 + 4/*candyAlgorithm.craftingCursor + 4 정도로 수정하면 됨*/;
+        int craftingCursor = isUnitTypeJelly ? gameManager.craftingCursor : enemyAlgorithm.craftingCursor + 4;
         string objectName = "";
 
         switch(craftingCursor) {
@@ -267,6 +288,19 @@ public class ObjectManager : MonoBehaviour
                 break;
             case 3:
                 objectName = "burgerJelly";
+                break;
+
+            case 4:
+                objectName = "caneCandy";
+                break;
+            case 5:
+                objectName = "normalCandy";
+                break;
+            case 6:
+                objectName = "rockCandy";
+                break;
+            case 7:
+                objectName = "rangedCandy";
                 break;
         }
 
