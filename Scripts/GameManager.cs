@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     public GameObject shopPanelObject;
     public GameObject[] craftingLockPanels;
     public Image[] shopingImages;
+    public Image soldOutImage;
     int shopingCursor = 0;
     Animator shopAnim;
 
@@ -213,6 +214,12 @@ public class GameManager : MonoBehaviour
                 break;
         }
         shopingImages[shopingCursor].gameObject.SetActive(true);
+
+        if (!craftingLockPanels[shopingCursor].activeSelf) {
+            soldOutImage.enabled = true;
+        } else {
+            soldOutImage.enabled = false;
+        }
     }
 
     // 크래프팅, 상점 - UI 애니메이션
@@ -304,7 +311,7 @@ public class GameManager : MonoBehaviour
         // 레시피 초기화
         for(int i = 0; i < craftingLockPanels.Length; i++) {
             craftingLockPanels[i].SetActive(true);
-            //
+            soldOutImage.enabled = false;
         }
 
         // Base 스탯 초기화
@@ -372,7 +379,7 @@ public class GameManager : MonoBehaviour
             gold -= rcprice;
             goldText.text = gold.ToString();
             craftingLockPanels[shopingCursor].SetActive(false);
-            // SOLD OUT 표기
+            soldOutImage.enabled = true;
         } else {
             noticeText.text = "골드가 부족합니다! (*요구 : " + rcprice.ToString() + ")";
             noticeAnim.ResetTrigger("notice");

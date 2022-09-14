@@ -203,6 +203,9 @@ public class ObjectManager : MonoBehaviour
                 targetPrefab = dPrefab;
                 targetPrefabCandyUnit = dPrefab.GetComponent<CandyUnit>();
                 break;
+            default:
+                Debug.Log("Error!\nObejctName : " + objectName);
+                return;
         }
         for (int i = 0; i < targetPool.Length; i++) {
             if (!targetPool[i].activeSelf) {
@@ -210,7 +213,7 @@ public class ObjectManager : MonoBehaviour
                     // 재화 계산
                     int sugarValue = int.Parse(sugarText.text);
                     int juiceValue = int.Parse(juiceText.text);
-                    int demandGold = sugarValue * 100 + juiceValue * 100;
+                    int demandGold = gameManager.craftingCursor * 100 + sugarValue * 100 + juiceValue * 100;
                     // int demandSugar = ;
                     if (gameManager.gold >= demandGold) {
                         // 재화 소모

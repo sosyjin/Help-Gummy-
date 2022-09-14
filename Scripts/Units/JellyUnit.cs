@@ -56,7 +56,7 @@ public class JellyUnit : MonoBehaviour
     // 유닛 사망 처리
     void UnitDie()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     void FixedUpdate()

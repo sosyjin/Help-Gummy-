@@ -51,12 +51,12 @@ public class CandyUnit : MonoBehaviour
     // 유닛 사망 처리
     void UnitDie()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     void FixedUpdate()
     {
-        RaycastHit2D raycast = Physics2D.Raycast(transform.position, Vector3.right * 1, atkDistance, isLayer);
+        RaycastHit2D raycast = Physics2D.Raycast(transform.position, Vector3.left * 1, atkDistance, isLayer);
         if (raycast.collider != null && raycast.collider.tag == "Jelly") { // 공격
             if (Mathf.Abs(transform.position.x - raycast.collider.transform.position.x) <= atkDistance) { // 공격 사정거리 계산
                 // ray 에 닿은 유닛 불러오기
@@ -74,7 +74,23 @@ public class CandyUnit : MonoBehaviour
                         break;
                     case 1:
                         // 일반 공격
-                        if (atkTimer <= 0) {
+                        if (atkTimer <= 0)
+                        {
+                            rayHitUnit.hp -= atkDmg;
+                            atkTimer = atkCoolTime;
+                        }
+                        break;
+                    case 2:
+                        // 일반 공격
+                        if (atkTimer <= 0)
+                        {
+                            rayHitUnit.hp -= atkDmg;
+                            atkTimer = atkCoolTime;
+                        }
+                        break;
+                    case 3:
+                        // 원거리 공격
+                        if (atkTimer <= 3) {
                             Instantiate(bullet, gameObject.transform.position, UnityEngine.Quaternion.identity);
                             atkTimer = atkCoolTime;
                         }
