@@ -244,8 +244,8 @@ public class ObjectManager : MonoBehaviour
                     jellyUnit.hp += sugarValue;
 
                     // 유닛 생성 위치 조정
-                    jellyUnit.gameObject.transform.localScale = new Vector3(0.4f + sugarValue * 0.03f, 0.4f + sugarValue * 0.03f, 1);
-                    jellyUnit.gameObject.transform.position += new Vector3(0, sugarValue * 0.024f, 0);
+                    jellyUnit.gameObject.transform.localScale = new Vector3(0.15f + sugarValue * 0.05f, 0.15f + sugarValue * 0.05f, 1);
+                    jellyUnit.gameObject.transform.position += new Vector3(0, sugarValue * 0.024f - 1.3f, 0);
 
                 } else {
                     // 오브젝트 초기화

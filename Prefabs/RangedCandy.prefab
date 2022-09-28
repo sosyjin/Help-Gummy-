@@ -84,14 +84,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: rangedCandy
-  atkDistance: 5
-  moveSpeed: 5
+  atkDistance: 1.6
+  moveSpeed: 3
   hp: 5
   atkDmg: 5
   skillDmg: 5
-  isLayer:
+  atkCoolTime: 1.5
+  skillCoolTime: 1.5
+  searchLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   bullet: {fileID: 5663383615272251927, guid: aae31361fd57a0a40a9d6d91f89106ee, type: 3}
 --- !u!212 &2863897293625592894
 SpriteRenderer:

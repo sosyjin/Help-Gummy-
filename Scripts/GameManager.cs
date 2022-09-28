@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [Header("재화")]
     public Text goldText;
     public Text sugarText;
-    public float maxTimer = 0;
+    public float maxTimer;
     [System.NonSerialized]
     public int gold = 0;
     [System.NonSerialized]

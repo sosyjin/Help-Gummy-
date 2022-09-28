@@ -16,18 +16,18 @@ public class CandyUnit : MonoBehaviour
     public int skillDmg;
 
     [Header("쿨타임")]
-    readonly public float atkCoolTime;
-    readonly public float skillCoolTime;
+    public float atkCoolTime;
+    public float skillCoolTime;
 
     [Header("레이어 마스크")]
-    public LayerMask isLayer;
+    public LayerMask searchLayer;
 
     [Header("etc")]
     public GameObject bullet;
 
     float bulletForce;
-    float atkTimer;
-    float skillTimer;
+    float atkTimer = 0f;
+    float skillTimer = 0f;
 
     ///<summary>  0 : normalCandy, 1 : rangedJelly</summary>
     int unitNumber;
@@ -39,12 +39,24 @@ public class CandyUnit : MonoBehaviour
         // 유닛명 상수화 (*비교 연산 속도 개선)
         switch (unitName)
         {
-            case "normalCandy":
+            case "caneCandy":
                 unitNumber = 0;
                 break;
-            case "rangedCandy":
+            case "normalCandy":
                 unitNumber = 1;
                 break;
+            case "rockCandy":
+                unitNumber = 2;
+                break;
+            case "rangedCandy":
+                unitNumber = 3;
+                break;
+            case "candyBase":
+                unitNumber = 4;
+                break;
+            default:
+                unitNumber = -1; // UnitName Error
+                break; 
         }
     }
 
@@ -56,8 +68,8 @@ public class CandyUnit : MonoBehaviour
 
     void FixedUpdate()
     {
-        RaycastHit2D raycast = Physics2D.Raycast(transform.position, Vector3.left * 1, atkDistance, isLayer);
-        if (raycast.collider != null && raycast.collider.tag == "Jelly") { // 공격
+        RaycastHit2D raycast = Physics2D.Raycast(transform.position, Vector3.left * 1, atkDistance, searchLayer);
+        if (raycast.collider != null) { // 공격
             if (Mathf.Abs(transform.position.x - raycast.collider.transform.position.x) <= atkDistance) { // 공격 사정거리 계산
                 // ray 에 닿은 유닛 불러오기
                 rayHitUnit = raycast.collider.gameObject.GetComponent<JellyUnit>();
@@ -74,16 +86,14 @@ public class CandyUnit : MonoBehaviour
                         break;
                     case 1:
                         // 일반 공격
-                        if (atkTimer <= 0)
-                        {
+                        if (atkTimer <= 0) {
                             rayHitUnit.hp -= atkDmg;
                             atkTimer = atkCoolTime;
                         }
                         break;
                     case 2:
                         // 일반 공격
-                        if (atkTimer <= 0)
-                        {
+                        if (atkTimer <= 0) {
                             rayHitUnit.hp -= atkDmg;
                             atkTimer = atkCoolTime;
                         }
@@ -96,6 +106,8 @@ public class CandyUnit : MonoBehaviour
                         }
                         break;
                 }
+            } else { // 이동
+                transform.position += Time.deltaTime * moveSpeed * new Vector3(-1, 0, 0);
             }
         }
         else { // 이동
