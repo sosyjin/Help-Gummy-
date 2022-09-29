@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
     //패럴렉스
     void Parallax()
     {
-        float pivotValue = -Input.GetAxisRaw("Horizontal");
+        float pivotValue = -mainCameraScript.horizontalMove;
         for (int i = 0; i < backgroundList[stageLevel].backgroundImages.Length; i++) {
             if (mainCameraScript.isCameraMoving) {
                 int parallaxSpeedRatio = int.Parse(backgroundList[stageLevel].backgroundImages[i].name.Split('_')[1]);
