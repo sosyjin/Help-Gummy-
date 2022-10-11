@@ -54,12 +54,18 @@ public class GameManager : MonoBehaviour
     int shopingCursor = 0;
     Animator shopAnim;
 
+    [Header("스토리 만화")]
+    public Image[] tutorialComics; // 튜토리얼 만화
+    public Image[] defeatIComics; // 스테이지 승리 만화
+    public Image[] loseComics; // 스테이지 패배 만화
+
     [Header("etc")]
     public GameObject optionGameObject;
     public Text noticeText;
     public Animator noticeAnim;
     public Image gameSpeedUIImage;
     public Sprite [] gameSpeedUIImageSources;
+    public GameObject[] gameSetImages;
 
     private void Awake()
     {
@@ -106,6 +112,33 @@ public class GameManager : MonoBehaviour
         stageLevel = inputStageLevel;
         for (int i = 0; i < backgroundList[stageLevel].backgroundImages.Length; i++)
             backgroundList[stageLevel].backgroundImages[i].SetActive(true);
+    }
+    // 스테이지 종료
+    public void GameSet(bool doesPlayerWin)
+    {
+        // defeat, lose UI 활성화
+        if(doesPlayerWin) { // 승리시
+            gameSetImages[0].SetActive(true);
+        } else { // 패배시
+            gameSetImages[1].SetActive(true);
+        }
+    }
+
+    // 4컷 만화 활성화
+    public void ShowComics(string keyString)
+    {
+        switch(keyString)
+        {
+            case "defeat":
+                defeatIComics[stageLevel].enabled = true;
+                break;
+            case "lose":
+                loseComics[stageLevel].enabled = true;
+                break;
+            default:
+                Debug.Log("예상치 못한 문자열을 입력받았습니다.");
+                break;
+        }
     }
 
     // 골드 타이머

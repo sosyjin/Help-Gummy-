@@ -24,6 +24,8 @@ public class CandyUnit : MonoBehaviour
 
     [Header("etc")]
     public GameObject bullet;
+    public GameObject gameManagerObject;
+    GameManager gameManager;
 
     float bulletForce;
     float atkTimer = 0f;
@@ -58,12 +60,18 @@ public class CandyUnit : MonoBehaviour
                 unitNumber = -1; // UnitName Error
                 break; 
         }
+
+        gameManager = gameManagerObject.GetComponent<GameManager>();
     }
 
     // 유닛 사망 처리
     void UnitDie()
     {
         gameObject.SetActive(false);
+
+        if(unitNumber == 4) {
+            gameManager.GameSet(false);
+        }
     }
 
     void FixedUpdate()
