@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
 
     [Header("스토리 만화")]
     public Image[] tutorialComics; // 튜토리얼 만화
-    public Image[] defeatIComics; // 스테이지 승리 만화
+    public Image[] victoryComics; // 스테이지 승리 만화
     public Image[] loseComics; // 스테이지 패배 만화
 
     [Header("etc")]
@@ -112,16 +112,18 @@ public class GameManager : MonoBehaviour
         stageLevel = inputStageLevel;
         for (int i = 0; i < backgroundList[stageLevel].backgroundImages.Length; i++)
             backgroundList[stageLevel].backgroundImages[i].SetActive(true);
+
     }
     // 스테이지 종료
     public void GameSet(bool doesPlayerWin)
     {
-        // defeat, lose UI 활성화
-        if(doesPlayerWin) { // 승리시
+        // victory, lose UI 활성화
+        if (doesPlayerWin) { // 승리시
             gameSetImages[0].SetActive(true);
         } else { // 패배시
             gameSetImages[1].SetActive(true);
         }
+        Time.timeScale = 0;
     }
 
     // 4컷 만화 활성화
@@ -129,8 +131,8 @@ public class GameManager : MonoBehaviour
     {
         switch(keyString)
         {
-            case "defeat":
-                defeatIComics[stageLevel].enabled = true;
+            case "victory":
+                victoryComics[stageLevel].enabled = true;
                 break;
             case "lose":
                 loseComics[stageLevel].enabled = true;
@@ -365,6 +367,7 @@ public class GameManager : MonoBehaviour
             shopAnim.SetBool("Disappear", true);
             shopPanelObject.transform.position = new Vector3(-500f, shopPanelObject.transform.position.y, shopPanelObject.transform.position.z);
         }
+
     }
 
     // 지정된 씬으로 이동

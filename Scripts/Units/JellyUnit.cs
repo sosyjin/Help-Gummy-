@@ -55,6 +55,7 @@ public class JellyUnit : MonoBehaviour
             case "jellyBase":
                 unitNumber = 4;
                 gameManager = gameManagerObject.GetComponent<GameManager>();
+
                 break;
             default:
                 unitNumber = -1; // UnitName Error
@@ -69,6 +70,7 @@ public class JellyUnit : MonoBehaviour
 
         if (unitNumber == 4) {
             gameManager.GameSet(false);
+            hp = 50;
         }
     }
 
