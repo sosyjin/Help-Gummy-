@@ -187,6 +187,15 @@ public class GameManager : MonoBehaviour
     }
 
     // 크래프팅, 상점 - 젤리 이미지 전환
+    public void ChangeCraftingImageByIndexNumber(int unitIndex)
+    {
+        // 모든 이미지 비활성화
+        for (int i = 0; i < craftingImages.Length; i++)
+            craftingImages[i].gameObject.SetActive(false);
+
+        craftingCursor = unitIndex;
+        craftingImages[craftingCursor].gameObject.SetActive(true);
+    }
     public void ChangeCraftingImage(string buttonType)
     {
         // 모든 이미지 비활성화
@@ -206,6 +215,9 @@ public class GameManager : MonoBehaviour
                     craftingCursor = 0;
                 else
                     craftingCursor += 1;
+                break;
+            default:
+                Debug.Log("crafting image error!");
                 break;
         }
         craftingImages[craftingCursor].gameObject.SetActive(true);
