@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5711664657100184825}
   - component: {fileID: 943919672350613244}
   - component: {fileID: 3784612624339762370}
+  - component: {fileID: 6570668317746522553}
   m_Layer: 8
   m_Name: BurgerJelly
   m_TagString: Jelly
@@ -96,7 +97,7 @@ MonoBehaviour:
   unitName: burgerJelly
   atkDistance: 1.6
   moveSpeed: 3
-  hp: 5
+  hp: 100
   atkDmg: 5
   skillDmg: 5
   atkCoolTime: 1.5
@@ -105,6 +106,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   bullet: {fileID: 8405003450537866093, guid: 0d63f7806c717d2408c4c75bb578c066, type: 3}
+  gameManagerObject: {fileID: 0}
 --- !u!212 &3784612624339762370
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -155,3 +157,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &6570668317746522553
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5711664657100184826}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 77dd1ce4480628e4fa8f659ba2cea8d0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

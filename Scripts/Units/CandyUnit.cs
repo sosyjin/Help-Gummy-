@@ -32,9 +32,10 @@ public class CandyUnit : MonoBehaviour
     float skillTimer = 0f;
 
     ///<summary>  0 : normalCandy, 1 : rangedJelly</summary>
-    int unitNumber;
-
+    public int unitNumber;
+    const int baseUnitNumber = 4;
     JellyUnit rayHitUnit;
+    Animator animator;
 
     private void Awake()
     {
@@ -55,13 +56,17 @@ public class CandyUnit : MonoBehaviour
                 break;
             case "candyBase":
                 unitNumber = 4;
-                gameManager = gameManagerObject.GetComponent<GameManager>();
                 break;
             default:
                 unitNumber = -1; // UnitName Error
-                break; 
+                break;
         }
 
+        if (unitNumber != baseUnitNumber) {
+            animator = GetComponentInChildren<Animator>();
+        } else {
+            gameManager = gameManagerObject.GetComponent<GameManager>();
+        }
     }
 
     // 유닛 사망 처리
@@ -69,18 +74,23 @@ public class CandyUnit : MonoBehaviour
     {
         gameObject.SetActive(false);
 
-        if(unitNumber == 4) {
+        if(unitNumber == baseUnitNumber) {
             gameManager.GameSet(false);
+            hp = 50;
         }
     }
 
     void FixedUpdate()
     {
-        RaycastHit2D raycast = Physics2D.Raycast(transform.position, Vector3.left * 1, atkDistance, searchLayer);
+        RaycastHit2D raycast = Physics2D.Raycast(transform.position, Vector3.left, atkDistance, searchLayer);
         if (raycast.collider != null) { // 공격
             if (Mathf.Abs(transform.position.x - raycast.collider.transform.position.x) <= atkDistance) { // 공격 사정거리 계산
                 // ray 에 닿은 유닛 불러오기
                 rayHitUnit = raycast.collider.gameObject.GetComponent<JellyUnit>();
+
+                if (unitNumber != baseUnitNumber) {
+                    animator.SetBool("IsMoving", true);
+                }
 
                 // 유닛별 공격 로직
                 switch (unitNumber)
@@ -108,7 +118,7 @@ public class CandyUnit : MonoBehaviour
                         break;
                     case 3:
                         // 원거리 공격
-                        if (atkTimer <= 3) {
+                        if (atkTimer <= 0) {
                             Instantiate(bullet, gameObject.transform.position, UnityEngine.Quaternion.identity);
                             atkTimer = atkCoolTime;
                         }
@@ -116,10 +126,17 @@ public class CandyUnit : MonoBehaviour
                 }
             } else { // 이동
                 transform.position += Time.deltaTime * moveSpeed * new Vector3(-1, 0, 0);
+                if (unitNumber != baseUnitNumber) {
+                    animator.SetBool("IsMoving", true);
+                }
             }
         }
         else { // 이동
             transform.position += Time.deltaTime * moveSpeed * new Vector3(-1, 0, 0);
+
+            if (unitNumber != baseUnitNumber) {
+                animator.SetBool("IsMoving", true);
+            }
         }
 
         atkTimer -= Time.deltaTime;

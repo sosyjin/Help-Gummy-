@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class JellyUnit : MonoBehaviour
 {
     [Header("유닛명")]
@@ -31,9 +32,10 @@ public class JellyUnit : MonoBehaviour
     float skillTimer = 0f;
 
     ///<summary>  0 : normalJelly, 1 : giantJelly, 2 : burgerJelly, 3 : rangedJelly</summary>
-    int unitNumber;
-
+    public int unitNumber;
+    const int baseUnitNumber = 4;
     CandyUnit rayHitUnit;
+    Animator animator;
 
     private void Awake()
     {
@@ -54,12 +56,16 @@ public class JellyUnit : MonoBehaviour
                 break;
             case "jellyBase":
                 unitNumber = 4;
-                gameManager = gameManagerObject.GetComponent<GameManager>();
-
                 break;
             default:
                 unitNumber = -1; // UnitName Error
                 break;
+        }
+
+        if(unitNumber != baseUnitNumber) {
+            animator = GetComponentInChildren<Animator>();
+        } else {
+            gameManager = gameManagerObject.GetComponent<GameManager>();
         }
     }
 
@@ -68,7 +74,7 @@ public class JellyUnit : MonoBehaviour
     {
         gameObject.SetActive(false);
 
-        if (unitNumber == 4) {
+        if (unitNumber == baseUnitNumber) {
             gameManager.GameSet(false);
             hp = 50;
         }
@@ -76,12 +82,16 @@ public class JellyUnit : MonoBehaviour
 
     void FixedUpdate()
     {
-        RaycastHit2D raycast = Physics2D.Raycast(transform.position, Vector3.right * 1, atkDistance, searchLayer);
+        RaycastHit2D raycast = Physics2D.Raycast(transform.position, Vector3.right, atkDistance, searchLayer);
 
         if (raycast.collider != null) {
             if (Mathf.Abs(transform.position.x - raycast.collider.transform.position.x) <= atkDistance) { // 공격 사정거리 계산
                 // ray 에 닿은 유닛 불러오기
                 rayHitUnit = raycast.collider.gameObject.GetComponent<CandyUnit>();
+
+                if (unitNumber != baseUnitNumber) {
+                    animator.SetBool("IsMoving", false);
+                }
 
                 // 유닛별 공격 로직
                 switch (unitNumber)
@@ -100,7 +110,7 @@ public class JellyUnit : MonoBehaviour
                             atkTimer = atkCoolTime;
                         }
                         // 밀치기 공격
-                        if (skillTimer <= 0) {
+                        if (skillTimer <= 0 && rayHitUnit.unitNumber != baseUnitNumber) {
                             rayHitUnit.hp -= skillDmg;
                             raycast.rigidbody.AddForceAtPosition(transform.right * bulletForce, raycast.collider.transform.position);
                             skillTimer = skillCoolTime;
@@ -113,7 +123,7 @@ public class JellyUnit : MonoBehaviour
                             atkTimer = atkCoolTime;
                         }
                         // 섭취 공격
-                        if (skillTimer <= 0) {
+                        if (skillTimer <= 0 && rayHitUnit.unitNumber != baseUnitNumber) {
                             raycast.collider.gameObject.SetActive(false);
                             skillTimer = skillCoolTime;
                         }
@@ -127,10 +137,16 @@ public class JellyUnit : MonoBehaviour
                         break;
                 }
             } else { // 이동
-                transform.position += Time.deltaTime * new Vector3(moveSpeed, 0, 0);
+                transform.position += Time.deltaTime * moveSpeed * new Vector3(1, 0, 0);
+                if (unitNumber != baseUnitNumber) {
+                    animator.SetBool("IsMoving", true);
+                }
             }
         } else { // 이동
             transform.position += Time.deltaTime * moveSpeed * new Vector3(1, 0, 0);
+            if (unitNumber != baseUnitNumber) {
+                animator.SetBool("IsMoving", true);
+            }
         }
 
         atkTimer -= Time.deltaTime;

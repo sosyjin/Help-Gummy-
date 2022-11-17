@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8167988790643775756}
   - component: {fileID: 4881831897379875464}
   - component: {fileID: 2754991821834238814}
+  - component: {fileID: -2035798424694785032}
   m_Layer: 9
   m_Name: CaneCandy
   m_TagString: Candy
@@ -105,6 +106,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   bullet: {fileID: 5663383615272251927, guid: aae31361fd57a0a40a9d6d91f89106ee, type: 3}
+  gameManagerObject: {fileID: 0}
 --- !u!212 &2754991821834238814
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -155,3 +157,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &-2035798424694785032
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8167988790643775757}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0fb4427b16d8e744e8f5dc29edd091aa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
