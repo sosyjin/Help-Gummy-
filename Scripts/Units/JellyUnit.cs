@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class JellyUnit : MonoBehaviour
 {
     [Header("유닛명")]
@@ -48,10 +47,10 @@ public class JellyUnit : MonoBehaviour
             case "giantJelly":
                 unitNumber = 1;
                 break;
-            case "burgerJelly":
+            case "rangedJelly":
                 unitNumber = 2;
                 break;
-            case "rangedJelly":
+            case "burgerJelly":
                 unitNumber = 3;
                 break;
             case "jellyBase":
@@ -104,43 +103,35 @@ public class JellyUnit : MonoBehaviour
                         }
                         break;
                     case 1:
-                        // 일반 공격
-                        if (atkTimer <= 0) {
-                            rayHitUnit.hp -= atkDmg;
-                            atkTimer = atkCoolTime;
-                        }
                         // 밀치기 공격
                         if (skillTimer <= 0 && rayHitUnit.unitNumber != baseUnitNumber) {
                             rayHitUnit.hp -= skillDmg;
                             raycast.rigidbody.AddForceAtPosition(transform.right * bulletForce, raycast.collider.transform.position);
                             skillTimer = skillCoolTime;
-                        }
-                        break;
-                    case 2:
-                        // 일반 공격
-                        if (atkTimer <= 0) {
+                        } else if (atkTimer <= 0) { // 일반 공격
                             rayHitUnit.hp -= atkDmg;
                             atkTimer = atkCoolTime;
                         }
-                        // 섭취 공격
-                        if (skillTimer <= 0 && rayHitUnit.unitNumber != baseUnitNumber) {
-                            raycast.collider.gameObject.SetActive(false);
-                            skillTimer = skillCoolTime;
-                        }
                         break;
-                    case 3:
+                    case 2:
                         // 일반 공격
                         if (atkTimer <= 0) {
                             Instantiate(bullet, gameObject.transform.position, UnityEngine.Quaternion.identity);
                             atkTimer = atkCoolTime;
                         }
                         break;
+                    case 3:
+                        if (skillTimer <= 0 && rayHitUnit.unitNumber != baseUnitNumber) { // 섭취 공격
+                            raycast.collider.gameObject.SetActive(false);
+                            skillTimer = skillCoolTime;
+                        } else if (atkTimer <= 0) { // 일반 공격
+                            rayHitUnit.hp -= atkDmg;
+                            atkTimer = atkCoolTime;
+                        }
+                        break;
                 }
-            } else { // 이동
+            } else { // 사정거리까지 이동
                 transform.position += Time.deltaTime * moveSpeed * new Vector3(1, 0, 0);
-                if (unitNumber != baseUnitNumber) {
-                    animator.SetBool("IsMoving", true);
-                }
             }
         } else { // 이동
             transform.position += Time.deltaTime * moveSpeed * new Vector3(1, 0, 0);

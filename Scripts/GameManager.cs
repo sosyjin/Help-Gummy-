@@ -10,6 +10,20 @@ public class BackgroundList
     public GameObject[] backgroundImages;
 }
 
+// 4페이지 만화 
+[System.Serializable]
+public class ComicsPagesList
+{
+    public Image [] comicsPages;
+    /*
+    public Image[] craftingTutorialComics;
+    public Image[] shopingTutorialComics;
+    public Image[] victoryComics;
+    public Image[] loseComics;
+    */
+}
+
+
 public class GameManager : MonoBehaviour
 {
     [Header("재화")]
@@ -54,10 +68,8 @@ public class GameManager : MonoBehaviour
     int shopingCursor = 0;
     Animator shopAnim;
 
-    [Header("스토리 만화")]
-    public Image[] tutorialComics; // 튜토리얼 만화
-    public Image[] victoryComics; // 스테이지 승리 만화
-    public Image[] loseComics; // 스테이지 패배 만화
+    [Header("만화")]
+    public ComicsPagesList [] comicsPagesList;
 
     [Header("etc")]
     public GameObject optionGameObject;
@@ -131,11 +143,14 @@ public class GameManager : MonoBehaviour
     {
         switch(keyString)
         {
-            case "victory":
-                victoryComics[stageLevel].enabled = true;
+            case "story_start":
+                comicsPagesList[0].comicsPages[0].enabled = true;
                 break;
-            case "lose":
-                loseComics[stageLevel].enabled = true;
+            case "tutorial_crafting":
+                comicsPagesList[1].comicsPages[0].enabled = true;
+                break;
+            case "tutorial_shoping":
+                comicsPagesList[2].comicsPages[0].enabled = true;
                 break;
             default:
                 Debug.Log("예상치 못한 문자열을 입력받았습니다.");
@@ -194,6 +209,25 @@ public class GameManager : MonoBehaviour
             craftingImages[i].gameObject.SetActive(false);
 
         craftingCursor = unitIndex;
+        
+        // 젤리 이름 텍스트 변경
+        switch (craftingCursor)
+        {
+            case 0:
+                jellyNameText.text = "곰 젤리";
+                break;
+            case 1:
+                jellyNameText.text = "젤리빈";
+                break;
+            case 2:
+                jellyNameText.text = "푸딩 젤리";
+                break;
+            case 3:
+                jellyNameText.text = "버거 젤리";
+                break;
+        }
+
+        // craftingCursor 번째 이미지 이미지 활성화
         craftingImages[craftingCursor].gameObject.SetActive(true);
     }
     public void ChangeCraftingImage(string buttonType)

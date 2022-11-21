@@ -59,7 +59,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.6, y: 3.2}
+  m_Size: {x: 1.6, y: 20}
   m_EdgeRadius: 0
 --- !u!50 &8167988790643775756
 Rigidbody2D:
@@ -96,8 +96,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: caneCandy
   atkDistance: 1.6
-  moveSpeed: 3
-  hp: 5
+  moveSpeed: 1
+  hp: 20
   atkDmg: 5
   skillDmg: 5
   atkCoolTime: 1.5
@@ -107,6 +107,7 @@ MonoBehaviour:
     m_Bits: 256
   bullet: {fileID: 5663383615272251927, guid: aae31361fd57a0a40a9d6d91f89106ee, type: 3}
   gameManagerObject: {fileID: 0}
+  unitNumber: 0
 --- !u!212 &2754991821834238814
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -244,9 +244,8 @@ public class ObjectManager : MonoBehaviour
                     jellyUnit.hp += sugarValue;
 
                     // 유닛 생성 위치 조정
-                    jellyUnit.gameObject.transform.localScale = new Vector3(0.15f + sugarValue * 0.05f, 0.15f + sugarValue * 0.05f, 1);
-                    jellyUnit.gameObject.transform.position = new Vector3(-7.5f, sugarValue * 0.25f - 1.2f, 0);
-
+                    jellyUnit.gameObject.transform.localScale = new Vector2(0.15f + sugarValue * 0.01f, 0.15f + sugarValue * 0.01f);
+                    jellyUnit.gameObject.transform.position = new Vector3(-7.5f, sugarValue * 0.05f - 1.2f, i);
                 } else {
                     // 오브젝트 초기화
                     targetPool[i].transform.position = targetPrefab.transform.position;
@@ -260,8 +259,8 @@ public class ObjectManager : MonoBehaviour
                     targetUnit.hp += enemyAlgorithm.sugarValue;
 
                     // 유닛 생성 위치 조정
-                    targetUnit.gameObject.transform.localScale = new Vector3(0.15f + enemyAlgorithm.sugarValue * 0.05f, 0.15f + enemyAlgorithm.sugarValue * 0.05f, 1);
-                    targetUnit.gameObject.transform.position = new Vector3(7.5f, enemyAlgorithm.sugarValue * 0.25f - 1.2f, 0);
+                    targetUnit.gameObject.transform.localScale = new Vector2(0.15f + enemyAlgorithm.sugarValue * 0.01f, 0.15f + enemyAlgorithm.sugarValue * 0.01f);
+                    targetUnit.gameObject.transform.position = new Vector3(7.5f, enemyAlgorithm.sugarValue * 0.05f - 1.2f, -i);
 
                     // 오브젝트 활성화
                     targetPool[i].SetActive(true);

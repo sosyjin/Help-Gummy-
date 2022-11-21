@@ -75,7 +75,7 @@ public class CandyUnit : MonoBehaviour
         gameObject.SetActive(false);
 
         if(unitNumber == baseUnitNumber) {
-            gameManager.GameSet(false);
+            gameManager.GameSet(true);
             hp = 50;
         }
     }
@@ -89,7 +89,7 @@ public class CandyUnit : MonoBehaviour
                 rayHitUnit = raycast.collider.gameObject.GetComponent<JellyUnit>();
 
                 if (unitNumber != baseUnitNumber) {
-                    animator.SetBool("IsMoving", true);
+                    animator.SetBool("IsMoving", false);
                 }
 
                 // 유닛별 공격 로직
@@ -124,11 +124,8 @@ public class CandyUnit : MonoBehaviour
                         }
                         break;
                 }
-            } else { // 이동
+            } else { // 사정거리까지 이동
                 transform.position += Time.deltaTime * moveSpeed * new Vector3(-1, 0, 0);
-                if (unitNumber != baseUnitNumber) {
-                    animator.SetBool("IsMoving", true);
-                }
             }
         }
         else { // 이동
