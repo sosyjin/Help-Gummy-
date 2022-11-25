@@ -97,9 +97,9 @@ MonoBehaviour:
   unitName: giantJelly
   atkDistance: 1.6
   moveSpeed: 1
-  hp: 20
-  atkDmg: 5
-  skillDmg: 5
+  hp: 100
+  atkDmg: 2
+  skillDmg: 3
   atkCoolTime: 1.5
   skillCoolTime: 1.5
   searchLayer:
